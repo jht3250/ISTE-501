@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 export function Header() {
   return (
-    <header className="flex flex-row items-center justify-around bg-blue-100 w-full p-8 rounded-lg">
+    <header className="flex flex-row items-center justify-around bg-[var(--color-blue-gray)] text-white w-full p-8">
       <Link href="/" aria-label="Home">
         <Image
           src="/logo.png" 
