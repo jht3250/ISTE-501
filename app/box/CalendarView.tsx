@@ -17,7 +17,7 @@ export default function CalendarView({ events }: Props) {
     const daysInMonth = Array.from({ length: 30 }, (_, i) => i + 1)
 
     return (
-        <div className="grid grid-cols-7 gap-2">
+        <div className="grid grid-cols-7 gap-2 auto-rows-fr">
             {daysInMonth.map(day => {
                 const dateKey = `2026-01-${day.toString().padStart(2, '0')}`
                 const dayEvents = eventsByDay[dateKey] || []

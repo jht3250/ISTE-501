@@ -12,7 +12,7 @@ export default function ViewToggle({ events }: Props) {
     const [view, setView] = useState<'list' | 'calendar'>('calendar')
 
     return (
-        <main className="m-8 bg-white">
+        <main className="m-8">
             {/* Header section */}
             <div className="flex items-center justify-between mb-6">
                 <Link
