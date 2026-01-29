@@ -5,6 +5,7 @@ import { EventRow } from '@/lib/types'
 type Props = { events: EventRow[] }
 
 export default function CalendarView({ events }: Props) {
+    
     // Group events by day
     const eventsByDay: Record<string, EventRow[]> = {}
     events.forEach(e => {

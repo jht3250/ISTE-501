@@ -12,7 +12,7 @@ export default function ViewToggle({ events }: Props) {
     const [view, setView] = useState<'list' | 'calendar'>('calendar')
 
     return (
-        <main className="m-8">
+        <main className="m-10 mx-20">
             {/* Header section */}
             <div className="flex items-center justify-between mb-6">
                 <Link
@@ -28,7 +28,7 @@ export default function ViewToggle({ events }: Props) {
                 </button>
             </div>
             {/* Table controls */}
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between m-8">
                 {/* <label className="flex items-center gap-2 text-sm">
                     <input type="checkbox" className="accent-teal-600" />
                     Toggle List View
@@ -59,13 +59,15 @@ export default function ViewToggle({ events }: Props) {
 
                 <span className="text-sm">ⓘ</span>
             </div>
-
-            {/* Conditional render */}
-            {view === 'list' ? (
-                <ListView events={events} />
-            ) : (
-                <CalendarView events={events} />
-            )}
+                            
+            <div className='m-8'>
+                {/* Conditional render */}
+                {view === 'list' ? (
+                    <ListView events={events} />
+                ) : (
+                    <CalendarView events={events} />
+                )}
+            </div>
         </main>
     )
 }
