@@ -12,6 +12,7 @@ type Props = { events: EventRow[] }
 export default function ViewToggle({ events }: Props) {
     const [view, setView] = useState<'list' | 'calendar'>('calendar')
 
+    // Get current month/year
     const [year, setYear] = useState(() => new Date().getFullYear())
     const [month, setMonth] = useState(() => new Date().getMonth())
 
@@ -47,10 +48,6 @@ export default function ViewToggle({ events }: Props) {
             </div>
             {/* Table controls */}
             <div className="flex items-center justify-between m-8">
-                {/* <label className="flex items-center gap-2 text-sm">
-                    <input type="checkbox" className="accent-teal-600" />
-                    Toggle List View
-                </label> */}
                 {/* Toggle buttons */}
                 <div className="flex gap-2">
                     <button
