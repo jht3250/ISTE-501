@@ -5,11 +5,29 @@ import CalendarView from './CalendarView'
 import { EventRow } from '@/lib/types'
 
 import Link from 'next/link'
+import Legend from '../components/Legend'
 
 type Props = { events: EventRow[] }
 
 export default function ViewToggle({ events }: Props) {
     const [view, setView] = useState<'list' | 'calendar'>('calendar')
+
+    const [year, setYear] = useState(() => new Date().getFullYear())
+    const [month, setMonth] = useState(() => new Date().getMonth())
+
+    const monthName = new Date(year, month).toLocaleString('default', {
+        month: 'long',
+    })
+
+    function goPrev() {
+        setMonth(m => (m === 0 ? 11 : m - 1))
+        setYear(y => (month === 0 ? y - 1 : y))
+    }
+
+    function goNext() {
+        setMonth(m => (m === 11 ? 0 : m + 1))
+        setYear(y => (month === 11 ? y + 1 : y))
+    }
 
     return (
         <main className="m-10 mx-20">
@@ -24,7 +42,7 @@ export default function ViewToggle({ events }: Props) {
                 </Link>
 
                 <button className="rounded-md bg-teal-600 px-4 py-2 text-sm font-medium text-white hover:bg-teal-700">
-                    Download (month) data
+                    Download {monthName} data
                 </button>
             </div>
             {/* Table controls */}
@@ -52,20 +70,24 @@ export default function ViewToggle({ events }: Props) {
                 </div>
 
                 <div className="flex items-center gap-4 text-sm font-medium">
-                    <button>{'<'}</button>
-                    <span>January</span>
-                    <button>{'>'}</button>
+                    <button className="text-lg" onClick={goPrev}>{'<'}</button>
+                    <span>{monthName}</span>
+                    <button className="text-lg" onClick={goNext}>{'>'}</button>
                 </div>
 
-                <span className="text-sm">ⓘ</span>
+                <Legend />
             </div>
-                            
+
             <div className='m-8'>
                 {/* Conditional render */}
                 {view === 'list' ? (
                     <ListView events={events} />
                 ) : (
-                    <CalendarView events={events} />
+                    <CalendarView
+                        events={events}
+                        year={year}
+                        month={month}
+                    />
                 )}
             </div>
         </main>

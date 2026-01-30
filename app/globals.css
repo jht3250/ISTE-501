@@ -4,6 +4,10 @@
   --background: #ffffff;
   --foreground: #171717;
   --color-blue-gray: #6489A0;
+  --color-dark-gray: #CBC4BC;
+  --color-kestrel: #D47456; 
+  --color-bat: #F3BA45;     
+  --color-other: #72B0E5;  
 }
 
 @theme inline {

@@ -1,6 +1,7 @@
 'use client'
 
 import { EventRow } from '@/lib/types'
+import { SPECIES_COLORS } from '@/lib/speciesColors'
 
 type Props = { events: EventRow[] }
 
@@ -37,7 +38,9 @@ export default function ListView({ events }: Props) {
                   </td>
 
                   <td className="border px-3 py-2">
-                    <span className="rounded-full bg-orange-400 px-3 py-1 text-xs text-white">
+                    <span className={`rounded-full px-3 py-1 text-xs
+                                        ${SPECIES_COLORS[event.common_name] ?? SPECIES_COLORS.Other}
+                                    `}>
                       {event.common_name}
                     </span>
                   </td>

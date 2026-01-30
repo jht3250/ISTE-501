@@ -18,13 +18,16 @@ INSERT INTO device (
 INSERT INTO species (
   common_id, category, scientific_name
 ) VALUES
-('bluebird', 'bird', 'Sialia sialis'),
-('sparrow', 'bird', 'Passer domesticus');
+('kestrel', 'Kestrel', 'Falco sparverius'),
+('bat', 'Bat', 'Chiroptera'),
+('other', 'Other', 'Unknown');
+
 
 -- Events
 INSERT INTO event (
   device_id, box_id, species_id,
   common_name, timestamp, occupancy_flag, temperature
 ) VALUES
-(1, 1, 1, 'Eastern Bluebird', strftime('%s','now'), 1, 22.5),
-(2, 2, 2, 'House Sparrow', strftime('%s','now'), 0, 18.2);
+(1, 1, 1, 'Kestrel', strftime('%s','now','-2 days'), 1, 22.5),
+(1, 1, 2, 'Bat', strftime('%s','now','-1 day'), 0, 18.2),
+(2, 2, 3, 'Other', strftime('%s','now'), 1, 20.1);

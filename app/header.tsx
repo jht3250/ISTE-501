@@ -18,7 +18,13 @@ export function Header() {
       <h1>Kestrel Boxes</h1>
 
       <Link href="/" className="font-medium">
-        Profile
+        <Image
+          src="/profile.png" 
+          alt="Profile Picture Logo"
+          width={36}
+          height={36}
+          className="cursor-pointer"
+        />
       </Link>
     </header>
   )
