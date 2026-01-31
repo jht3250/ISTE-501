@@ -10,22 +10,22 @@ export default function ListView({ events }: Props) {
     <div>
       <div className="overflow-x-auto rounded-md border">
         <table className="w-full border-collapse text-sm">
-          <thead className="bg-gray-200">
+          <thead className="bg-[#CBC4BC]">
             <tr>
-              <th className="border px-3 py-2 text-left">Date</th>
-              <th className="border px-3 py-2 text-left">Timestamp</th>
-              <th className="border px-3 py-2 text-left">Animal Type</th>
-              <th className="border px-3 py-2 text-left">Box Location</th>
-              <th className="border px-3 py-2 text-left">Image</th>
+              <th className="border px-3 py-2 text-left font-[var(--font-noto-serif)] font-bold">Date</th>
+              <th className="border px-3 py-2 text-left font-[var(--font-noto-serif)] font-bold">Timestamp</th>
+              <th className="border px-3 py-2 text-left font-[var(--font-noto-serif)] font-bold">Animal Type</th>
+              <th className="border px-3 py-2 text-left font-[var(--font-noto-serif)] font-bold">Box Location</th>
+              <th className="border px-3 py-2 text-left font-[var(--font-noto-serif)] font-bold">Image</th>
             </tr>
           </thead>
 
           <tbody>
-            {events.map(event => {
+            {events.map((event, index) => {
               const date = new Date(event.timestamp * 1000)
 
               return (
-                <tr key={event.event_id} className="even:bg-gray-100">
+                <tr key={event.event_id} className={index === 0 ? 'bg-[#f2f2f1]' : index === 1 ? 'bg-[#e0dbd7]' : index % 2 === 0 ? 'bg-[#f2f2f1]' : 'bg-[#e0dbd7]'}>
                   <td className="border px-3 py-2">
                     {date.toLocaleDateString()}
                   </td>
@@ -38,7 +38,7 @@ export default function ListView({ events }: Props) {
                   </td>
 
                   <td className="border px-3 py-2">
-                    <span className={`rounded-full px-3 py-1 text-xs
+                    <span className={`rounded-full px-4 py-0.5 text-xs whitespace-nowrap block min-w-[80px] text-center
                                         ${SPECIES_COLORS[event.common_name] ?? SPECIES_COLORS.Other}
                                     `}>
                       {event.common_name}
@@ -46,12 +46,30 @@ export default function ListView({ events }: Props) {
                   </td>
 
                   <td className="border px-3 py-2">
-                    {event.box_name}
+                    Salmon Creek
                   </td>
 
                   <td className="border px-3 py-2 text-center">
-                    {event.image_url ? '🖼️' : '—'}
+                    <img 
+                      src="/image-icon.png" 
+                      alt="Image" 
+                      className="w-6 h-6 mx-auto"
+                    />
                   </td>
+                </tr>
+              )
+            })}
+            
+            {/* Add 8 empty rows */}
+            {[...Array(8)].map((_, index) => {
+              const rowIndex = events.length + index
+              return (
+                <tr key={`empty-${index}`} className={rowIndex % 2 === 0 ? 'bg-[#f2f2f1]' : 'bg-[#e0dbd7]'}>
+                  <td className="border px-3 py-2 h-[40px]"></td>
+                  <td className="border px-3 py-2 h-[40px]"></td>
+                  <td className="border px-3 py-2 h-[40px]"></td>
+                  <td className="border px-3 py-2 h-[40px]"></td>
+                  <td className="border px-3 py-2 text-center h-[40px]"></td>
                 </tr>
               )
             })}
