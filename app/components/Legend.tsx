@@ -22,7 +22,7 @@ export default function Legend() {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(o => !o)}
-        className="px-2 py-1"
+        className="px-2 py-1 cursor-pointer"
         aria-label="Legend"
       >
         ⓘ

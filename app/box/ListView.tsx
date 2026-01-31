@@ -4,12 +4,13 @@ import { EventRow } from '@/lib/types'
 import { SPECIES_COLORS } from '@/lib/speciesColors'
 
 type Props = {
-    events: EventRow[]
-    year: number
-    month: number // 0–11 (JS Date) 
+  events: EventRow[]
+  year: number
+  month: number // 0–11 (JS Date) 
+  onImageClick: (event: EventRow) => void
 }
 
-export default function ListView({ events, year, month }: Props) {
+export default function ListView({ events, year, month, onImageClick }: Props) {
   // Filter events by selected year & month
   const monthEvents = events.filter(event => {
     const date = new Date(event.timestamp * 1000)
@@ -63,16 +64,14 @@ export default function ListView({ events, year, month }: Props) {
                   </td>
 
                   <td className="border px-3 py-2 text-center">
-                    <img 
-                      src="/image-icon.png" 
-                      alt="Image" 
-                      className="w-6 h-6 mx-auto"
-                    />
+                    <button onClick={() => onImageClick(event)} className="hover:opacity-70 cursor-pointer">
+                      <img src="/image-icon.png" className="w-6 h-6 mx-auto" />
+                    </button>
                   </td>
                 </tr>
               )
             })}
-            
+
             {/* Add 8 empty rows */}
             {[...Array(8)].map((_, index) => {
               const rowIndex = events.length + index

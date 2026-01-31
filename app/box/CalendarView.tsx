@@ -7,9 +7,10 @@ type Props = {
     events: EventRow[]
     year: number
     month: number // 0–11 (JS Date) 
+    onEventClick: (event: EventRow) => void
 }
 
-export default function CalendarView({ events, year, month }: Props) {
+export default function CalendarView({ events, year, month, onEventClick }: Props) {
     // Group events by day
     const eventsByDay: Record<string, EventRow[]> = {}
     events.forEach(e => {
@@ -74,9 +75,10 @@ export default function CalendarView({ events, year, month }: Props) {
                             {dayEvents.map(event => (
                                 <div
                                     key={event.event_id}
-                                    className={`h-4 rounded-full text-[10px] px-2 truncate text-black
+                                    className={`h-4 rounded-full text-[10px] px-2 truncate text-black cursor-pointer
                                         ${SPECIES_COLORS[event.common_name] ?? 'bg-blue-400'}
                                     `}
+                                    onClick={() => onEventClick(event)}
                                 >
                                     {new Date(event.timestamp * 1000).toLocaleTimeString([], {
                                         hour: '2-digit',
