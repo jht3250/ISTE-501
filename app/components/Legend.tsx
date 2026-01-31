@@ -34,7 +34,7 @@ export default function Legend() {
 
           {Object.entries(SPECIES_COLORS).map(([label, color]) => (
             <div key={label} className="flex items-center mb-2">
-              <span className={`w-30 px-2 py-1 rounded-lg ${color}`}>{label}</span>
+              <span className={`w-30 px-2 py-1 rounded-full ${color}`}>{label}</span>
             </div>
           ))}
         </div>

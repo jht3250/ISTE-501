@@ -39,7 +39,7 @@ export default function ViewToggle({ events }: Props) {
                     className="flex items-center gap-2 text-sm font-medium text-gray-700 group"
                 >
                     <span className="text-xl">&lt;</span>
-                    <span className='hover:underline'>Salmon Creek</span>
+                    <span className='hover:underline text-xl font-[var(--font-noto-serif)]'>Salmon Creek</span>
                 </Link>
 
                 <button className="rounded-md bg-teal-600 px-4 py-2 text-sm font-medium text-white hover:bg-teal-700">
@@ -47,28 +47,33 @@ export default function ViewToggle({ events }: Props) {
                 </button>
             </div>
             {/* Table controls */}
-            <div className="flex items-center justify-between m-8">
-                {/* Toggle buttons */}
-                <div className="flex gap-2">
-                    <button
-                        className={`px-2 py-1 rounded ${view === 'list' ? 'bg-teal-600 text-white' : 'bg-gray-200'
-                            }`}
-                        onClick={() => setView('list')}
+            <div className="flex items-center justify-between m-8 relative">
+                {/* Toggle switch */}
+                <div className="flex items-center gap-2 text-sm cursor-pointer">
+                    <input 
+                        type="checkbox" 
+                        className="sr-only"
+                        checked={view === 'list'}
+                        onChange={() => setView(view === 'list' ? 'calendar' : 'list')}
+                    />
+                    <img 
+                        src={view === 'list' ? '/toggle-list.png' : '/toggle-calendar.png'}
+                        alt="Toggle View"
+                        className="w-8 h-4 cursor-pointer"
+                        onClick={() => setView(view === 'list' ? 'calendar' : 'list')}
+                    />
+                    <span 
+                        className="cursor-pointer"
+                        onClick={() => setView(view === 'list' ? 'calendar' : 'list')}
                     >
-                        List
-                    </button>
-                    <button
-                        className={`px-2 py-1 rounded ${view === 'calendar' ? 'bg-teal-600 text-white' : 'bg-gray-200'
-                            }`}
-                        onClick={() => setView('calendar')}
-                    >
-                        Calendar
-                    </button>
+                        Toggle List View
+                    </span>
                 </div>
 
-                <div className="flex items-center gap-4 text-sm font-medium">
+                {/* Centered month navigation */}
+                <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-4 text-sm font-medium">
                     <button className="text-lg" onClick={goPrev}>{'<'}</button>
-                    <span>{monthName}</span>
+                    <span className="text-xl font-[var(--font-noto-serif)]">{monthName}</span>
                     <button className="text-lg" onClick={goNext}>{'>'}</button>
                 </div>
 

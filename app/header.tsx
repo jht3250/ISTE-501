@@ -15,7 +15,7 @@ export function Header() {
         />
       </Link>
 
-      <h1>Kestrel Boxes</h1>
+      <h1 className="text-2xl font-[var(--font-noto-serif)]">Kestrel Boxes</h1>
 
       <Link href="/" className="font-medium">
         <Image

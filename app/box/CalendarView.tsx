@@ -61,19 +61,21 @@ export default function CalendarView({ events, year, month }: Props) {
                 return (
                     <div
                         key={idx}
-                        className={`h-28 rounded p-2 flex flex-col
-                            ${cell.inMonth ? 'bg-gray-100' : 'bg-gray-300 opacity-60'}
+                        className={`h-28 rounded p-2 flex flex-col relative shadow-sm
+                            ${cell.inMonth ? 'bg-[#D9D9D6]' : 'bg-[#D9D9D6] opacity-50'}
                         `}
                     >
-                        <div className="text-xs font-bold mb-1">{cell.day}</div>
+                        <div className="absolute top-0 left-0">
+                            <span className="text-xs font-bold bg-[#C4C0B8] text-black rounded-tl px-2 py-1 inline-block">{cell.day}</span>
+                        </div>
 
                         {/* Events */}
-                        <div className="flex flex-col gap-1 overflow-hidden">
+                        <div className="flex flex-col gap-1 overflow-hidden mt-8">
                             {dayEvents.map(event => (
                                 <div
                                     key={event.event_id}
-                                    className={`h-3 rounded text-[10px] px-1 truncate
-                                        ${SPECIES_COLORS[event.common_name] ?? SPECIES_COLORS.Other}
+                                    className={`h-4 rounded-full text-[10px] px-2 truncate text-black
+                                        ${SPECIES_COLORS[event.common_name] ?? 'bg-blue-400'}
                                     `}
                                 >
                                     {new Date(event.timestamp * 1000).toLocaleTimeString([], {
