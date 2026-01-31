@@ -83,7 +83,11 @@ export default function ViewToggle({ events }: Props) {
             <div className='m-8'>
                 {/* Conditional render */}
                 {view === 'list' ? (
-                    <ListView events={events} />
+                    <ListView
+                        events={events}
+                        year={year}
+                        month={month}
+                    />
                 ) : (
                     <CalendarView
                         events={events}

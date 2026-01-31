@@ -3,9 +3,22 @@
 import { EventRow } from '@/lib/types'
 import { SPECIES_COLORS } from '@/lib/speciesColors'
 
-type Props = { events: EventRow[] }
+type Props = {
+    events: EventRow[]
+    year: number
+    month: number // 0–11 (JS Date) 
+}
 
-export default function ListView({ events }: Props) {
+export default function ListView({ events, year, month }: Props) {
+  // Filter events by selected year & month
+  const monthEvents = events.filter(event => {
+    const date = new Date(event.timestamp * 1000)
+    return (
+      date.getFullYear() === year &&
+      date.getMonth() === month
+    )
+  })
+
   return (
     <div>
       <div className="overflow-x-auto rounded-md border">
@@ -21,7 +34,7 @@ export default function ListView({ events }: Props) {
           </thead>
 
           <tbody>
-            {events.map((event, index) => {
+            {monthEvents.map((event, index) => {
               const date = new Date(event.timestamp * 1000)
 
               return (
