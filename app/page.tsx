@@ -1,7 +1,13 @@
 import Image from "next/image";
 import Link from 'next/link'
+import VisitsChart from "./components/VisitsChart";
+import { aggregateByDate } from "@/lib/aggregate";
+import { getEvents } from "@/lib/queries";
 
 export default function Home() {
+
+  const events = getEvents()
+
   const locations = [
     { name: "Salmon Creek", href: "/box" },
     { name: "Irene Gossin", href: "/box" },
@@ -12,7 +18,7 @@ export default function Home() {
 
   const notifications = [
     "Corrupted Data",
-    "Unused box", 
+    "Unused box",
     "Unidentified Species",
     "Low Battery",
     "Disconnected Box"
@@ -62,6 +68,9 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {/* Charts.js Section */}
+        <VisitsChart data={aggregateByDate(events)} />
       </main>
     </div>
   );

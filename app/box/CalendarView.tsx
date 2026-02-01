@@ -14,10 +14,11 @@ export default function CalendarView({ events, year, month, onEventClick }: Prop
     // Group events by day
     const eventsByDay: Record<string, EventRow[]> = {}
     events.forEach(e => {
-        const day = new Date(e.timestamp * 1000).toISOString().split('T')[0]
+        const day = new Date(e.timestamp * 1000).toLocaleDateString('en-CA')
         if (!eventsByDay[day]) eventsByDay[day] = []
         eventsByDay[day].push(e)
     })
+
 
     // Calendar math
     const firstDay = new Date(year, month, 1).getDay() // 0 = Sun
@@ -56,7 +57,7 @@ export default function CalendarView({ events, year, month, onEventClick }: Prop
     return (
         <div className="grid grid-cols-7 gap-2">
             {cells.map((cell, idx) => {
-                const dateKey = cell.date.toISOString().split('T')[0]
+                const dateKey = cell.date.toLocaleDateString('en-CA')
                 const dayEvents = eventsByDay[dateKey] ?? []
 
                 return (
