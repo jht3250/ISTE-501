@@ -7,6 +7,8 @@ import { EventRow } from '@/lib/types'
 import Link from 'next/link'
 import Legend from '../components/Legend'
 import EventModal from '../components/EventModal'
+import { updateEvent } from '../actions/update'
+import { exportMonthData } from '../actions/export'
 
 type Props = { events: EventRow[] }
 
@@ -34,6 +36,24 @@ export default function ViewToggle({ events }: Props) {
         setYear(y => (month === 11 ? y + 1 : y))
     }
 
+    // Export handler
+    const handleExport = async () => {
+    const result = await exportMonthData(year, month)
+    if (result.success && result.data) {
+        const blob = new Blob([result.data], { type: 'text/csv' })
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = `${monthName}_${year}_data.csv`
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+        window.URL.revokeObjectURL(url)
+    } else {
+        alert('Failed to export data')
+    }
+}
+
     return (
         <main className="m-10 mx-20">
             {/* Header section */}
@@ -46,7 +66,10 @@ export default function ViewToggle({ events }: Props) {
                     <span className='hover:underline text-xl font-[var(--font-noto-serif)]'>Salmon Creek</span>
                 </Link>
 
-                <button className="rounded-md bg-teal-600 px-4 py-2 text-sm font-medium text-white hover:bg-teal-800 cursor-pointer">
+                <button 
+                    onClick={handleExport}
+                    className="rounded-md bg-teal-600 px-4 py-2 text-sm font-medium text-white hover:bg-teal-800 cursor-pointer"
+                >
                     Download {monthName} data
                 </button>
             </div>
@@ -108,7 +131,12 @@ export default function ViewToggle({ events }: Props) {
                 <EventModal
                     event={selectedEvent}
                     onClose={() => setSelectedEvent(null)}
+                    onSave={async (updatedData) => {
+                        await updateEvent(selectedEvent.event_id, updatedData)
+                        window.location.reload()
+                    }}
                 />
+                
             )}
 
         </main>
