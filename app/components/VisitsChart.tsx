@@ -76,6 +76,7 @@ export default function VisitsChart({ data }: { data: VisitCount[] }) {
             },
             y: {
                 beginAtZero: true,
+                max: 5,
                 grid: {
                     color: '#e0e0e0',
                 },
