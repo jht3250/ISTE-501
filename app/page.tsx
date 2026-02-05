@@ -85,9 +85,8 @@ export default function Home() {
                 {notifications.map((notification) => (
                   <button
                     key={notification}
-                    className={`w-full text-left px-3 py-2 text-sm border-2 border-black rounded-2xl hover:bg-zinc-50 transition flex items-center gap-2 ${
-                      notification === "Corrupted Data" ? "bg-[#9E2A2B] text-white" : "bg-[#D9D9D6]"
-                    }`}
+                    className={`w-full text-left px-3 py-2 text-sm border-2 border-black rounded-2xl hover:bg-zinc-50 transition flex items-center gap-2 ${notification === "Corrupted Data" ? "bg-[#9E2A2B] text-white" : "bg-[#D9D9D6]"
+                      }`}
                   >
                     {notification === "Corrupted Data" && (
                       <img

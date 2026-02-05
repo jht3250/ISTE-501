@@ -38,21 +38,21 @@ export default function ViewToggle({ events }: Props) {
 
     // Export handler
     const handleExport = async () => {
-    const result = await exportMonthData(year, month)
-    if (result.success && result.data) {
-        const blob = new Blob([result.data], { type: 'text/csv' })
-        const url = window.URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.href = url
-        a.download = `${monthName}_${year}_data.csv`
-        document.body.appendChild(a)
-        a.click()
-        document.body.removeChild(a)
-        window.URL.revokeObjectURL(url)
-    } else {
-        alert('Failed to export data')
+        const result = await exportMonthData(year, month)
+        if (result.success && result.data) {
+            const blob = new Blob([result.data], { type: 'text/csv' })
+            const url = window.URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.href = url
+            a.download = `${monthName}_${year}_data.csv`
+            document.body.appendChild(a)
+            a.click()
+            document.body.removeChild(a)
+            window.URL.revokeObjectURL(url)
+        } else {
+            alert('Failed to export data')
+        }
     }
-}
 
     return (
         <main className="m-10 mx-20">
@@ -66,7 +66,7 @@ export default function ViewToggle({ events }: Props) {
                     <span className='hover:underline text-xl font-[var(--font-noto-serif)]'>Salmon Creek</span>
                 </Link>
 
-                <button 
+                <button
                     onClick={handleExport}
                     className="rounded-md bg-teal-600 px-4 py-2 text-sm font-medium text-white hover:bg-teal-800 cursor-pointer"
                 >
@@ -136,7 +136,7 @@ export default function ViewToggle({ events }: Props) {
                         window.location.reload()
                     }}
                 />
-                
+
             )}
 
         </main>
