@@ -31,9 +31,7 @@ CREATE TABLE device (
 
 CREATE TABLE species (
     species_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    common_id TEXT NOT NULL,
-    category TEXT NOT NULL,
-    scientific_name TEXT NOT NULL
+    names TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE event (
@@ -41,7 +39,6 @@ CREATE TABLE event (
     device_id INTEGER NOT NULL,
     box_id INTEGER NOT NULL,
     species_id INTEGER NOT NULL,
-    common_name TEXT NOT NULL,
     timestamp INTEGER NOT NULL,
     image_url TEXT,
     occupancy_flag INTEGER NOT NULL,
