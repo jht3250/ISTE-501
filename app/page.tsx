@@ -10,11 +10,11 @@ export default function Home() {
   const events = getEvents()
 
   const locations = [
-    { name: "Salmon Creek", href: "/box" },
-    { name: "Irene Gossin", href: "/box" },
-    { name: "Macyville Woods", href: "/box" },
-    { name: "Corbett's Glen", href: "/box" },
-    { name: "Kraai Preserve", href: "/box" }
+    { name: "Salmon Creek", href: "/box", image: "/SalmonCreek.png" },
+    { name: "Irene Gossin", href: "/box", image: "/IreneGossin.png" },
+    { name: "Macyville Woods", href: "/box", image: "/MacyvilleWoods.png" },
+    { name: "Corbett's Glen", href: "/box", image: "/CorbettGlen.png" },
+    { name: "Kraai Preserve", href: "/box", image: "/KraaiPreserve.png" }
   ];
 
   const notifications = [
@@ -36,9 +36,42 @@ export default function Home() {
                 <Link
                   key={location.name}
                   href={location.href}
-                  className="flex h-[200px] w-[200px] items-center justify-center rounded-lg border border-zinc-300 bg-zinc-100 text-center font-medium text-zinc-700 hover:bg-zinc-200 hover:shadow-md transition"
+                  className="relative w-full aspect-square border-2 border-black bg-zinc-100 hover:bg-zinc-200 hover:shadow-md transition overflow-hidden"
                 >
-                  {location.name}
+                  <img
+                    src={location.image}
+                    alt={location.name}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover'
+                    }}
+                  />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <span className="text-black font-medium text-lg font-[var(--font-noto-serif)] drop-shadow-lg">{location.name}</span>
+                    <span className="text-black text-lg font-[var(--font-noto-serif)] drop-shadow-lg">00.000.000</span>
+                  </div>
+                  {location.name === "Salmon Creek" && (
+                    <img
+                      src="/signal.png"
+                      alt="Signal"
+                      className="absolute bottom-2 right-2 w-8 h-8"
+                    />
+                  )}
+                  {location.name === "Macyville Woods" && (
+                    <img
+                      src="/battery-icon.png"
+                      alt="Battery"
+                      className="absolute bottom-2 right-2 w-8 h-8"
+                    />
+                  )}
+                  {location.name === "Kraai Preserve" && (
+                    <img
+                      src="/clock.png"
+                      alt="Clock"
+                      className="absolute bottom-2 right-2 w-8 h-8"
+                    />
+                  )}
                 </Link>
               ))}
             </div>
@@ -46,26 +79,60 @@ export default function Home() {
 
           {/* Notifications Section */}
           <div className="lg:w-80">
-            <div className="bg-white border border-zinc-200 rounded-lg p-6">
+            <div className="bg-[#D9D9D6] border border-zinc-200 p-6 h-150 shadow-lg">
               <h2 className="text-lg font-semibold mb-4">Notifications</h2>
               <div className="space-y-2 mb-6">
                 {notifications.map((notification) => (
                   <button
                     key={notification}
-                    className="w-full text-left px-3 py-2 text-sm border border-zinc-200 rounded hover:bg-zinc-50 transition"
+                    className={`w-full text-left px-3 py-2 text-sm border-2 border-black rounded-2xl hover:bg-zinc-50 transition flex items-center gap-2 ${
+                      notification === "Corrupted Data" ? "bg-[#9E2A2B] text-white" : "bg-[#D9D9D6]"
+                    }`}
                   >
+                    {notification === "Corrupted Data" && (
+                      <img
+                        src="/data-alert-rounded.png"
+                        alt="Alert"
+                        className="w-6 h-6"
+                      />
+                    )}
+                    {notification === "Unused box" && (
+                      <img
+                        src="/clock.png"
+                        alt="Clock"
+                        className="w-6 h-6"
+                      />
+                    )}
+                    {notification === "Unidentified Species" && (
+                      <img
+                        src="/question-fill.png"
+                        alt="Question"
+                        className="w-6 h-6"
+                      />
+                    )}
+                    {notification === "Low Battery" && (
+                      <img
+                        src="/battery-icon.png"
+                        alt="Battery"
+                        className="w-6 h-6"
+                      />
+                    )}
+                    {notification === "Disconnected Box" && (
+                      <img
+                        src="/signal.png"
+                        alt="Signal"
+                        className="w-6 h-6"
+                      />
+                    )}
                     {notification}
                   </button>
                 ))}
               </div>
-              <div className="space-y-2">
-                <button className="w-full px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 transition">
-                  Upload Data
-                </button>
-                <button className="w-full px-4 py-2 border border-zinc-300 rounded hover:bg-zinc-50 transition">
-                  Add New Box
-                </button>
-              </div>
+            </div>
+            <div className="mt-12">
+              <button className="w-full px-4 py-2 bg-[#609EA0] text-white rounded hover:bg-opacity-90 transition">
+                Upload Data
+              </button>
             </div>
           </div>
         </div>
