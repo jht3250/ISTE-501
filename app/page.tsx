@@ -78,35 +78,60 @@ export default function Home() {
 
           {/* Notifications Section */}
           <div className="lg:w-80">
-            <div className="bg-[#D9D9D6] border border-zinc-200 rounded-lg p-6">
+            <div className="bg-[#D9D9D6] border border-zinc-200 p-6 h-150 shadow-lg">
               <h2 className="text-lg font-semibold mb-4">Notifications</h2>
               <div className="space-y-2 mb-6">
                 {notifications.map((notification) => (
                   <button
                     key={notification}
-                    className={`w-full text-left px-3 py-2 text-sm border border-zinc-200 rounded hover:bg-zinc-50 transition flex items-center gap-2 ${
-                      notification === "Corrupted Data" ? "bg-[#9E2A2B] text-white" : "bg-white"
+                    className={`w-full text-left px-3 py-2 text-sm border-2 border-black rounded-2xl hover:bg-zinc-50 transition flex items-center gap-2 ${
+                      notification === "Corrupted Data" ? "bg-[#9E2A2B] text-white" : "bg-[#D9D9D6]"
                     }`}
                   >
                     {notification === "Corrupted Data" && (
                       <img
                         src="/data-alert-rounded.png"
                         alt="Alert"
-                        className="w-4 h-4"
+                        className="w-6 h-6"
+                      />
+                    )}
+                    {notification === "Unused box" && (
+                      <img
+                        src="/clock.png"
+                        alt="Clock"
+                        className="w-6 h-6"
+                      />
+                    )}
+                    {notification === "Unidentified Species" && (
+                      <img
+                        src="/question-fill.png"
+                        alt="Question"
+                        className="w-6 h-6"
+                      />
+                    )}
+                    {notification === "Low Battery" && (
+                      <img
+                        src="/battery-icon.png"
+                        alt="Battery"
+                        className="w-6 h-6"
+                      />
+                    )}
+                    {notification === "Disconnected Box" && (
+                      <img
+                        src="/signal.png"
+                        alt="Signal"
+                        className="w-6 h-6"
                       />
                     )}
                     {notification}
                   </button>
                 ))}
               </div>
-              <div className="space-y-2">
-                <button className="w-full px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 transition">
-                  Upload Data
-                </button>
-                <button className="w-full px-4 py-2 border border-zinc-300 rounded hover:bg-zinc-50 transition">
-                  Add New Box
-                </button>
-              </div>
+            </div>
+            <div className="mt-12">
+              <button className="w-full px-4 py-2 bg-[#609EA0] text-white rounded hover:bg-opacity-90 transition">
+                Upload Data
+              </button>
             </div>
           </div>
         </div>
