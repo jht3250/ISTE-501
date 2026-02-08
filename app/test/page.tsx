@@ -1,26 +1,28 @@
 'use client'
 
 import { useState } from "react"
-import Modal from "../components/Modal"
+import Modal from "../components/ErrorModal"
+import { ERROR_MODALS } from "@/lib/modals/errorContent"
+import DownloadComplete from "../components/Complete"
+import ErrorModal from "../components/ErrorModal"
 
 export default function Test() {
     const [open, setOpen] = useState(true)
+
+    const modalData = ERROR_MODALS["HARDWARE"]
+
     return (
 
-        <Modal
+        <ErrorModal
             isOpen={open}
             onClose={() => setOpen(false)}
-            title="Hardware Error"
-            message="There appears to be an issue with your hardware."
-            detail="Camera Module"
-            extraInfo={
-                <>
-                    <p>
-                        Please check the hardware of your box to ensure proper connection
-                        and try again.
-                    </p>
-                </>
-            }
+            title={modalData.title}
+            message={modalData.message}
+            detail={modalData.detail}
+            extraInfo={modalData.extraInfo}
+            // actions={modalData.actions}
         />
+
+        // <DownloadComplete />
     )
 }

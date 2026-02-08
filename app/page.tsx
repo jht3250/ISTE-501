@@ -35,7 +35,7 @@ export default function Home() {
               {locations.map((location) => (
                 <Link
                   key={location.name}
-                  href={location.href}
+                  href={`/box/${encodeURIComponent(location.name)}`}
                   className="relative w-full aspect-square border-2 border-black bg-zinc-100 hover:bg-zinc-200 hover:shadow-md transition overflow-hidden"
                 >
                   <img
@@ -72,7 +72,7 @@ export default function Home() {
                       className="absolute bottom-2 right-2 w-8 h-8"
                     />
                   )}
-                </Link>
+                </Link> 
               ))}
             </div>
           </div>

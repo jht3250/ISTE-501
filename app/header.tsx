@@ -7,7 +7,7 @@ export function Header() {
     <header className="flex flex-row items-center justify-between bg-[var(--color-blue-gray)] text-white w-full p-8 px-20">
       <Link href="/" aria-label="Home">
         <Image
-          src="/logo.png" 
+          src="/logo.png"
           alt="Genesee Land Trust Logo"
           width={128}
           height={128}
@@ -19,7 +19,7 @@ export function Header() {
 
       <Link href="/profile" className="font-medium">
         <Image
-          src="/profile.png" 
+          src="/profile.png"
           alt="Profile Picture Logo"
           width={36}
           height={36}

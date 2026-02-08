@@ -1,5 +1,5 @@
 'use client'
-import { ReactNode } from 'react'
+import { ModalAction } from '@/lib/modals/errorContent'
 
 type ModalProps = {
     isOpen: boolean
@@ -8,10 +8,11 @@ type ModalProps = {
     title: string
     message: string
     detail?: string
-    extraInfo?: React.ReactNode
+    extraInfo?: string
+    actions?: ModalAction[]
 }
 
-export default function Modal({ isOpen, onClose, title, message, detail, extraInfo }: ModalProps) {
+export default function ErrorModal({ isOpen, onClose, title, message, detail, extraInfo, actions }: ModalProps) {
     if (!isOpen) return null
 
     return (
@@ -55,6 +56,21 @@ export default function Modal({ isOpen, onClose, title, message, detail, extraIn
                     {extraInfo && (
                         <div className="text-sm">
                             {extraInfo}
+                        </div>
+                    )}
+
+                    {/* Actions buttons */}
+                    {actions && actions.length > 0 && (
+                        <div className="mt-4 flex justify-center gap-4">
+                            {actions.map((action, idx) => (
+                                <button
+                                    key={idx}
+                                    onClick={action.onClick}
+                                    className="rounded border border-white px-4 py-2 text-white hover:bg-gray-100 hover:text-black transition"
+                                >
+                                    {action.label}
+                                </button>
+                            ))}
                         </div>
                     )}
                 </div>

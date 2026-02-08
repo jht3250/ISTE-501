@@ -5,14 +5,14 @@ import CalendarView from './CalendarView'
 import { EventRow } from '@/lib/types'
 
 import Link from 'next/link'
-import Legend from '../components/Legend'
-import EventModal from '../components/EventModal'
-import { updateEvent } from '../actions/update'
-import { exportMonthData } from '../actions/export'
+import Legend from '../../components/Legend'
+import EventModal from '../../components/EventModal'
+import { updateEvent } from '../../actions/update'
+import { exportMonthData } from '../../actions/export'
 
-type Props = { events: EventRow[] }
+type Props = { events: EventRow[], boxName: string }
 
-export default function ViewToggle({ events }: Props) {
+export default function ViewToggle({ events, boxName }: Props) {
     const [view, setView] = useState<'list' | 'calendar'>('calendar')
 
     // For Event Modal
@@ -63,7 +63,7 @@ export default function ViewToggle({ events }: Props) {
                     className="flex items-center gap-2 text-sm font-medium text-gray-700 group"
                 >
                     <span className="text-xl">&lt;</span>
-                    <span className='hover:underline text-xl font-[var(--font-noto-serif)]'>Salmon Creek</span>
+                    <span className='hover:underline text-xl font-[var(--font-noto-serif)]'>{boxName}</span>
                 </Link>
 
                 <button
