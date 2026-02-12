@@ -113,3 +113,64 @@ INSERT INTO event (
 (1, 1, 2, strftime('%s','2026-02-28 04:20:00'), '/images/bat/b14.jpg', 0, 17.4),
 (2, 2, 1, strftime('%s','2026-02-28 13:45:00'), '/images/kestrel/k27.jpg', 1, 25.2),
 (1, 1, 3, strftime('%s','2026-02-28 20:10:00'), '/images/other/o17.jpg', 1, 22.6);
+
+
+-- === NOTIFICATION TEST DATA ===
+
+-- Unused box: Box C with no recent events (last event 45 days ago)
+INSERT INTO bird_box (
+  name, location_lat, location_lng,
+  status, status_updated_at, installed_at, notes
+) VALUES
+('Box C', 43.0900, -77.6650, 'active', strftime('%s','now'), strftime('%s','now'), 'Near pond');
+
+INSERT INTO device (
+  box_id, serial_number, power_type,
+  last_seen_at, maintenance_status
+) VALUES
+(3, 'DEV-003', 'solar', strftime('%s','now'), 'ok');
+
+INSERT INTO event (
+  device_id, box_id, species_id, timestamp, image_url, occupancy_flag, temperature
+) VALUES
+(3, 3, 1, strftime('%s', 'now', '-45 days'), '/images/kestrel/k_old.jpg', 1, 22.0);
+
+-- Corrupted data: events with NULL or empty image_url
+INSERT INTO event (
+  device_id, box_id, species_id, timestamp, image_url, occupancy_flag, temperature
+) VALUES
+(1, 1, 1, strftime('%s','2026-02-10 08:00:00'), NULL, 1, 23.0),
+(2, 2, 2, strftime('%s','2026-02-11 09:30:00'), '', 0, 19.5),
+(1, 1, 3, strftime('%s','2026-02-12 10:15:00'), NULL, 1, 21.0);
+
+-- Power log entries (includes low battery readings)
+INSERT INTO power_log (
+  device_id, timestamp, battery_voltage, status
+) VALUES
+(1, strftime('%s', 'now', '-7 days'), 4.2, 'ok'),
+(1, strftime('%s', 'now', '-5 days'), 4.0, 'ok'),
+(1, strftime('%s', 'now', '-3 days'), 3.8, 'ok'),
+(1, strftime('%s', 'now', '-1 day'), 3.4, 'low'),
+(2, strftime('%s', 'now', '-6 days'), 4.1, 'ok'),
+(2, strftime('%s', 'now', '-4 days'), 3.9, 'ok'),
+(2, strftime('%s', 'now'), 3.6, 'ok'),
+(3, strftime('%s', 'now', '-10 days'), 4.0, 'ok'),
+(3, strftime('%s', 'now'), 3.2, 'critical');
+
+-- Disconnected box: Box D with device last seen 72 hours ago
+INSERT INTO bird_box (
+  name, location_lat, location_lng,
+  status, status_updated_at, installed_at, notes
+) VALUES
+('Box D', 43.0920, -77.6680, 'active', strftime('%s','now'), strftime('%s','now'), 'Hilltop');
+
+INSERT INTO device (
+  box_id, serial_number, power_type,
+  last_seen_at, maintenance_status
+) VALUES
+(4, 'DEV-004', 'battery', strftime('%s', 'now', '-72 hours'), 'issue');
+
+INSERT INTO event (
+  device_id, box_id, species_id, timestamp, image_url, occupancy_flag, temperature
+) VALUES
+(4, 4, 1, strftime('%s', 'now', '-80 hours'), '/images/kestrel/k_disc.jpg', 1, 22.5);

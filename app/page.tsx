@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from 'next/link'
 import VisitsChart from "./components/VisitsChart";
 import { aggregateByDate } from "@/lib/aggregate";
-import { getEvents } from "@/lib/queries";
+import { getEvents, getAllNotifications } from "@/lib/queries";
 import { ProgressBar } from "./components/ui/ProgressBar";
 
 export default function Home() {
@@ -17,13 +17,45 @@ export default function Home() {
     { name: "Kraai Preserve", href: "/box", image: "/KraaiPreserve.png" }
   ];
 
-  const notifications = [
-    "Corrupted Data",
-    "Unused box",
-    "Unidentified Species",
-    "Low Battery",
-    "Disconnected Box"
-  ];
+  const notifications = getAllNotifications()
+
+  const notificationItems = [
+    {
+      id: 'corruptedData',
+      label: 'Corrupted Data',
+      active: notifications.corruptedData.length > 0,
+      icon: '/data-alert-rounded.png',
+      highlighted: true
+    },
+    {
+      id: 'unusedBox',
+      label: 'Unused box',
+      active: notifications.unusedBox.length > 0,
+      icon: '/clock.png',
+      highlighted: false
+    },
+    {
+      id: 'unidentifiedSpecies',
+      label: 'Unidentified Species',
+      active: notifications.unidentifiedSpecies.length > 0,
+      icon: '/question-fill.png',
+      highlighted: false
+    },
+    {
+      id: 'lowBattery',
+      label: 'Low Battery',
+      active: notifications.lowBattery.length > 0,
+      icon: '/battery-icon.png',
+      highlighted: false
+    },
+    {
+      id: 'disconnectedBox',
+      label: 'Disconnected Box',
+      active: notifications.disconnectedBox.length > 0,
+      icon: '/signal.png',
+      highlighted: false
+    }
+  ].filter(item => item.active);
 
   return (
     <div className="flex min-h-screen bg-zinc-50 font-sans">
@@ -82,48 +114,15 @@ export default function Home() {
             <div className="bg-[#D9D9D6] border border-zinc-200 p-6 h-150 shadow-lg">
               <h2 className="text-lg font-semibold mb-4">Notifications</h2>
               <div className="space-y-2 mb-6">
-                {notifications.map((notification) => (
+                {notificationItems.map((item) => (
                   <button
-                    key={notification}
-                    className={`w-full text-left px-3 py-2 text-sm border-2 border-black rounded-2xl hover:bg-zinc-50 transition flex items-center gap-2 ${notification === "Corrupted Data" ? "bg-[#9E2A2B] text-white" : "bg-[#D9D9D6]"
-                      }`}
+                    key={item.id}
+                    className={`w-full text-left px-3 py-2 text-sm border-2 border-black rounded-2xl hover:bg-zinc-50 transition flex items-center gap-2 ${
+                      item.highlighted ? "bg-[#9E2A2B] text-white" : "bg-[#D9D9D6]"
+                    }`}
                   >
-                    {notification === "Corrupted Data" && (
-                      <img
-                        src="/data-alert-rounded.png"
-                        alt="Alert"
-                        className="w-6 h-6"
-                      />
-                    )}
-                    {notification === "Unused box" && (
-                      <img
-                        src="/clock.png"
-                        alt="Clock"
-                        className="w-6 h-6"
-                      />
-                    )}
-                    {notification === "Unidentified Species" && (
-                      <img
-                        src="/question-fill.png"
-                        alt="Question"
-                        className="w-6 h-6"
-                      />
-                    )}
-                    {notification === "Low Battery" && (
-                      <img
-                        src="/battery-icon.png"
-                        alt="Battery"
-                        className="w-6 h-6"
-                      />
-                    )}
-                    {notification === "Disconnected Box" && (
-                      <img
-                        src="/signal.png"
-                        alt="Signal"
-                        className="w-6 h-6"
-                      />
-                    )}
-                    {notification}
+                    <img src={item.icon} alt={item.label} className="w-6 h-6" />
+                    {item.label}
                   </button>
                 ))}
               </div>
