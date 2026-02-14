@@ -30,8 +30,8 @@ export default function Reset() {
     }
 
     return (
-        <div className="flex justify-center mt-12">
-            <div className="w-full rounded-lg bg-[#D9D9D6] p-8 shadow-lg">
+        <div className="flex justify-center items-center min-h-[calc(100vh-128px)]">
+            <div className="w-96 rounded-lg bg-[#D9D9D6] p-8 shadow-lg">
 
                 {!hasRequestedReset ? (
                     /* ================= EMAIL FORM ================= */
