@@ -38,9 +38,12 @@ export default function Profile() {
                             <button className="text-xs opacity-70 hover:opacity-100">👁</button>
                         </div>
 
-                        <button className="text-sm text-blue-600 hover:underline">
+                        <Link
+                            href="/auth/reset"
+                            className="text-sm text-blue-600 hover:underline"
+                        >
                             Change Password
-                        </button>
+                        </Link>
                     </div>
 
                     {/* MFA Section */}
