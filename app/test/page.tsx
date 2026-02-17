@@ -9,7 +9,7 @@ import ErrorModal from "../components/ErrorModal"
 export default function Test() {
     const [open, setOpen] = useState(true)
 
-    const modalData = ERROR_MODALS["HARDWARE"]
+    const modalData = ERROR_MODALS["SEASONAL"]
 
     return (
 
@@ -18,8 +18,8 @@ export default function Test() {
             onClose={() => setOpen(false)}
             title={modalData.title}
             message={modalData.message}
-            detail={modalData.detail}
             extraInfo={modalData.extraInfo}
+            variant={modalData.variant}
             // actions={modalData.actions}
         />
 

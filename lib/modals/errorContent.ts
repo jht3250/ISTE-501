@@ -7,11 +7,14 @@ export type ErrorModalKey =
   | "HARDWARE_CONNECTION"
   | "UPLOAD"
   | "CORRUPTED_IMAGE"
+  | "SEASONAL"
 
 export type ModalAction = {
   label: string
   onClick: () => void
 }
+
+type HeaderVariant = "error" | "warning" | "info"
 
 export type ErrorModalContent = {
   title: string
@@ -19,7 +22,7 @@ export type ErrorModalContent = {
   detail?: string
   extraInfo?: string
   actions?: ModalAction[]
-  variant?: "error" | "warning"
+  variant?: HeaderVariant
 }
 
 export const ERROR_MODALS: Record<ErrorModalKey, ErrorModalContent> = {
@@ -78,5 +81,12 @@ export const ERROR_MODALS: Record<ErrorModalKey, ErrorModalContent> = {
       },
     ],
     variant: "warning",
+  },
+
+  SEASONAL: {
+    title: "End of Season",
+    message: "The Kestrel season is approaching its end.",
+    extraInfo: "At the end of the season, remove the hardware from the boxes and charge the batteries to ensure proper charge for the next season.",
+    variant: "info",
   },
 } 

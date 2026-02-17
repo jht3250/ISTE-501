@@ -10,10 +10,17 @@ type ModalProps = {
     detail?: string
     extraInfo?: string
     actions?: ModalAction[]
+    variant?: "error" | "warning" | "info"
 }
 
-export default function ErrorModal({ isOpen, onClose, title, message, detail, extraInfo, actions }: ModalProps) {
+export default function ErrorModal({ isOpen, onClose, title, message, detail, extraInfo, actions, variant }: ModalProps) {
     if (!isOpen) return null
+
+    const variantStyles = {
+        error: "bg-red-800",
+        warning: "bg-yellow-600",
+        info: "bg-green-700"
+    }
 
     return (
         <div
@@ -34,8 +41,7 @@ export default function ErrorModal({ isOpen, onClose, title, message, detail, ex
                 </button>
 
                 {/* Info Section */}
-                {/* Red header */}
-                <div className="my-8 rounded bg-red-800 px-4 py-3 text-center text-white text-xl font-[var(--font-noto-serif)]">
+                <div className={`my-8 rounded ${variantStyles[variant || "error"]} px-4 py-3 text-center text-white text-xl font-[var(--font-noto-serif)]`}>
                     {title}
                 </div>
 
@@ -54,7 +60,7 @@ export default function ErrorModal({ isOpen, onClose, title, message, detail, ex
                         </div>
                     )} */}
                     {extraInfo && (
-                        <div className="text-sm">
+                        <div className="text-md">
                             {extraInfo}
                         </div>
                     )}
