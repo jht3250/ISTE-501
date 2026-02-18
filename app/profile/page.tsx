@@ -1,6 +1,18 @@
+'use client'
+
 import Link from "next/link";
+import { useState } from "react";
+import SignOutModal from "../components/SignOut";
 
 export default function Profile() {
+    const [showSignOut, setShowSignOut] = useState(false)
+
+    const handleConfirmSignOut = () => {
+        // something something
+        console.log("Signing out...")
+        setShowSignOut(false)
+    }
+
     return (
         <main className="mt-10 mx-20">
             {/* Back Section */}
@@ -20,10 +32,20 @@ export default function Profile() {
                     <div className="flex items-start justify-between mb-6">
                         <h2 className="text-xl font-bold">Account</h2>
 
-                        <button className="flex items-center gap-1 text-sm font-medium hover:underline">
+                        <button
+                            onClick={() => setShowSignOut(true)}
+                            className="flex items-center gap-1 text-sm font-medium hover:underline"
+                        >
                             Sign Out
                             <span className="text-lg">↪</span>
                         </button>
+                        {showSignOut && (
+                            <SignOutModal
+                                onConfirm={handleConfirmSignOut}
+                                onCancel={() => setShowSignOut(false)}
+                            />
+                        )}
+
                     </div>
                     {/* Account Info */}
                     <div className="space-y-3 mb-8 text-sm">

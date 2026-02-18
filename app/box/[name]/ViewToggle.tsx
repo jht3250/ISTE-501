@@ -5,7 +5,7 @@ import CalendarView from './CalendarView'
 import { EventRow } from '@/lib/types'
 
 import Link from 'next/link'
-import Legend from '../../components/Legend'
+import Legend from '../../components/ui/Legend'
 import EventModal from '../../components/EventModal'
 import { updateEvent } from '../../actions/update'
 import { exportMonthData } from '../../actions/export'
