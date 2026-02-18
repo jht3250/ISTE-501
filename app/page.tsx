@@ -5,6 +5,7 @@ import { aggregateByDate } from "@/lib/aggregate";
 import { getEvents, getAllNotifications } from "@/lib/queries";
 import { ProgressBar } from "./components/ui/ProgressBar";
 import SeasonalReminder from "./components/ui/Seasonal";
+import AddBoxModalWrapper from "./components/AddBox";
 
 export default function Home() {
 
@@ -135,9 +136,7 @@ export default function Home() {
               <button className="w-full px-4 py-2 bg-[#609EA0] text-white rounded hover:opacity-50 transition">
                 Upload Data
               </button>
-              <button className="w-full px-4 py-2 border text-black rounded hover:opacity-50 transition">
-                Add New Box
-              </button>
+              <AddBoxModalWrapper />
             </div>
           </div>
         </div>
