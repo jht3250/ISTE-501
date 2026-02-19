@@ -1,10 +1,26 @@
+'use client'
+
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+
 export default function WaitingPage() {
+    const router = useRouter()
+
+    useEffect(() => {
+        // Simulate hardware connection detection after 5 seconds
+        const timer = setTimeout(() => {
+            router.push('/upload/connected')
+        }, 5000)
+
+        return () => clearTimeout(timer)
+    }, [router])
+
     return (
         <div className="flex justify-center items-center min-h-[calc(100vh-128px)]">
             <div className="w-[800px] bg-[#D9D9D6] p-8 shadow-lg">
                 <div className="text-center">
                     <h2 className="text-2xl font-bold mb-6">Upload Data</h2>
-                    
+
                     <div className="flex justify-center items-center mb-20">
                         <div className="text-left justify-center">
                              <p className="text-gray-600 leading-relaxed mb-20 mr-45">
@@ -12,14 +28,14 @@ export default function WaitingPage() {
                             </p>
                         </div>
                         <div className="flex justify-center m-4">
-                            <img 
-                                src="/upload.png" 
-                                alt="Upload icon" 
+                            <img
+                                src="/upload.png"
+                                alt="Upload icon"
                                 className="w-120 h-40"
                             />
                         </div>
                     </div>
-                    
+
                     <div className="mb-6">
                         <p className="text-lg font-medium text-gray-700">Waiting for connection...</p>
                     </div>

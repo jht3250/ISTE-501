@@ -1,32 +1,48 @@
 'use client'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { requestPasswordReset, resetPassword } from '@/app/actions/auth'
 
 export default function Reset() {
 
     const [email, setEmail] = useState('')
+    const [token, setToken] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-
+    const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const [hasRequestedReset, setHasRequestedReset] = useState(false)
+    const router = useRouter()
 
-    const handleRequestReset = (e: React.FormEvent) => {
+    const handleRequestReset = async (e: React.FormEvent) => {
         e.preventDefault()
-        console.log({ email })
-        // something something to send reset email
-        setHasRequestedReset(true)
-    }
+        setError('')
+        setLoading(true)
 
-    const handleResetPassword = (e: React.FormEvent) => {
-        e.preventDefault()
-
-        if (password !== confirmPassword) {
-            alert('Passwords do not match')
+        const result = await requestPasswordReset(email)
+        if (result.error) {
+            setError(result.error)
+            setLoading(false)
             return
         }
 
-        console.log({ password })
-        // something something to actually reset password
+        setLoading(false)
+        setHasRequestedReset(true)
+    }
+
+    const handleResetPassword = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setError('')
+        setLoading(true)
+
+        const result = await resetPassword(email, token, password, confirmPassword)
+        if (result.error) {
+            setError(result.error)
+            setLoading(false)
+        } else {
+            router.push('/auth')
+        }
     }
 
     return (
@@ -41,9 +57,12 @@ export default function Reset() {
                             <h1 className="text-2xl text-center">
                                 Reset Password
                             </h1>
-                            <p className="text-sm text-gray-600">Enter your email and we will send you a link to reset your password.</p>
-
+                            <p className="text-sm text-gray-600">Enter your email and we will send you a code to reset your password.</p>
                         </div>
+
+                        {error && (
+                            <p className="text-red-600 text-sm text-center">{error}</p>
+                        )}
 
                         {/* Email */}
                         <div className="flex flex-col">
@@ -61,27 +80,50 @@ export default function Reset() {
                         {/* Submit */}
                         <button
                             type="submit"
-                            className="w-full rounded bg-[#609EA0] text-white py-2 font-semibold hover:bg-blue-700 transition"
+                            disabled={loading}
+                            className="w-full rounded bg-[#609EA0] text-white py-2 font-semibold hover:bg-blue-700 transition disabled:opacity-50"
                         >
-                            Send Email
+                            {loading ? 'Sending...' : 'Send Code'}
                         </button>
 
                     </form>
                 ) : (
-                    /* ================= PASSWORD FORM ================= */
+                    /* ================= CODE + PASSWORD FORM ================= */
                     <form onSubmit={handleResetPassword} className="max-w-sm mx-auto p-4 gap-8 flex flex-col">
                         <h1 className="text-2xl text-center">
                             Reset Password
                         </h1>
 
-                        {/* Password */}
+                        <p className="text-sm text-gray-600 text-center">
+                            A reset code was sent to <strong>{email}</strong>. Enter it below.
+                        </p>
+
+                        {error && (
+                            <p className="text-red-600 text-sm text-center">{error}</p>
+                        )}
+
+                        {/* Reset Code */}
+                        <div className="flex flex-col">
+                            <input
+                                type="text"
+                                id="token"
+                                value={token}
+                                onChange={(e) => setToken(e.target.value)}
+                                placeholder="Enter 6-digit code"
+                                maxLength={6}
+                                className="bg-white rounded border border-gray-600 px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 text-center tracking-widest text-lg"
+                                required
+                            />
+                        </div>
+
+                        {/* New Password */}
                         <div className="flex flex-col">
                             <input
                                 type="password"
                                 id="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                placeholder="Password"
+                                placeholder="New Password"
                                 className="bg-white rounded border border-gray-600 px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200"
                                 required
                             />
@@ -95,7 +137,7 @@ export default function Reset() {
                                 id="confirm-password"
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
-                                placeholder="Confirm Password"
+                                placeholder="Confirm New Password"
                                 className="bg-white rounded border border-gray-600 px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200"
                                 required
                             />
@@ -104,14 +146,14 @@ export default function Reset() {
                         {/* Submit */}
                         <button
                             type="submit"
-                            className="w-full rounded bg-[#609EA0] text-white py-2 font-semibold hover:bg-blue-700 transition"
+                            disabled={loading}
+                            className="w-full rounded bg-[#609EA0] text-white py-2 font-semibold hover:bg-blue-700 transition disabled:opacity-50"
                         >
-                            Reset Password
+                            {loading ? 'Resetting...' : 'Reset Password'}
                         </button>
 
                     </form>
-                )
-                }
+                )}
             </div>
         </div>
     )

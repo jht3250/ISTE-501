@@ -3,15 +3,28 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { login } from "@/app/actions/auth";
 
 export default function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
+    const router = useRouter()
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        console.log({ email, password })
-        // something something
+        setError('')
+        setLoading(true)
+
+        const result = await login(email, password)
+        if (result.error) {
+            setError(result.error)
+            setLoading(false)
+        } else {
+            router.push('/')
+        }
     }
 
     return (
@@ -22,6 +35,11 @@ export default function Login() {
                     <h1 className="text-2xl text-center">
                         Login
                     </h1>
+
+                    {error && (
+                        <p className="text-red-600 text-sm text-center">{error}</p>
+                    )}
+
                     {/* Email */}
                     <div className="flex flex-col">
                         <input
@@ -62,15 +80,15 @@ export default function Login() {
                     {/* Submit */}
                     <button
                         type="submit"
-                        className="w-full rounded bg-[#609EA0] text-white py-2 font-semibold hover:bg-blue-700 transition"
+                        disabled={loading}
+                        className="w-full rounded bg-[#609EA0] text-white py-2 font-semibold hover:bg-blue-700 transition disabled:opacity-50"
                     >
-                        Login
+                        {loading ? 'Logging in...' : 'Login'}
                     </button>
 
-                    {/* Link to login */}
+                    {/* Link to create account */}
                     <div className="text-center">
                         <p className="text-sm text-gray-600">
-
                             <Link href="/auth/create-account" className="text-black-600 underline hover:text-blue-600 hover:underline">
                                 Create a New Account
                             </Link>

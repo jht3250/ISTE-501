@@ -1,3 +1,5 @@
+'use client'
+
 export default function CompletePage() {
     return (
         <div className="flex justify-center items-center min-h-[calc(100vh-128px)]">

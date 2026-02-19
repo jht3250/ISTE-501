@@ -61,7 +61,9 @@ CREATE TABLE user_account (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
-    created_at INTEGER NOT NULL DEFAULT (strftime('%s','now'))
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s','now')),
+    reset_token TEXT,
+    reset_token_expires_at INTEGER
 );
 
 CREATE TABLE data_export (

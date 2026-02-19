@@ -1,4 +1,20 @@
+'use client'
+
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+
 export default function ConnectedPage() {
+    const router = useRouter()
+
+    useEffect(() => {
+        // Auto-advance to processing after 2 seconds
+        const timer = setTimeout(() => {
+            router.push('/upload/processing')
+        }, 2000)
+
+        return () => clearTimeout(timer)
+    }, [router])
+
     return (
         <div className="flex justify-center items-center min-h-[calc(100vh-128px)]">
             <div className="w-[600px] rounded-lg bg-[#D9D9D6] p-8 shadow-lg">
