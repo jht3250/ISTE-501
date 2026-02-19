@@ -1,9 +1,11 @@
 import Image from "next/image";
 import Link from 'next/link'
-import VisitsChart from "./components/VisitsChart";
+import VisitsChart from "./components/ui/VisitsChart";
 import { aggregateByDate } from "@/lib/aggregate";
 import { getEvents, getAllNotifications } from "@/lib/queries";
 import { ProgressBar } from "./components/ui/ProgressBar";
+import SeasonalReminder from "./components/ui/Seasonal";
+import AddBoxModalWrapper from "./components/AddBox";
 
 export default function Home() {
 
@@ -57,9 +59,12 @@ export default function Home() {
     }
   ].filter(item => item.active);
 
+  const seasonalReminder = false;
+  // TODO: Implement seasonal reminder logic based on current date and season end date
+
   return (
     <div className="flex min-h-screen bg-zinc-50 font-sans">
-      <main className="flex-1 max-w-7xl mx-auto px-8 py-12">
+      <main className="flex-1 max-w-7xl mx-auto px-8 py-15">
         <div className="flex flex-col lg:flex-row gap-12">
           {/* Location Boxes */}
           <div className="flex-1">
@@ -104,22 +109,22 @@ export default function Home() {
                       className="absolute bottom-2 right-2 w-8 h-8"
                     />
                   )}
-                </Link> 
+                </Link>
               ))}
             </div>
           </div>
 
           {/* Notifications Section */}
           <div className="lg:w-80">
+            {seasonalReminder && <SeasonalReminder />}
             <div className="bg-[#D9D9D6] border border-zinc-200 p-6 h-150 shadow-lg">
               <h2 className="text-lg font-semibold mb-4">Notifications</h2>
               <div className="space-y-2 mb-6">
                 {notificationItems.map((item) => (
                   <button
                     key={item.id}
-                    className={`w-full text-left px-3 py-2 text-sm border-2 border-black rounded-2xl hover:bg-zinc-50 transition flex items-center gap-2 ${
-                      item.highlighted ? "bg-[#9E2A2B] text-white" : "bg-[#D9D9D6]"
-                    }`}
+                    className={`w-full text-left px-3 py-2 text-sm border-2 border-black rounded-2xl hover:opacity-50 transition flex items-center gap-2 ${item.highlighted ? "bg-[#9E2A2B] text-white" : "bg-[#D9D9D6]"
+                      }`}
                   >
                     <img src={item.icon} alt={item.label} className="w-6 h-6" />
                     {item.label}
@@ -127,10 +132,11 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <div className="mt-12">
-              <button className="w-full px-4 py-2 bg-[#609EA0] text-white rounded hover:bg-opacity-90 transition">
+            <div className="mt-12 flex flex-col gap-4">
+              <button className="w-full px-4 py-2 bg-[#609EA0] text-white rounded hover:opacity-50 transition">
                 Upload Data
               </button>
+              <AddBoxModalWrapper />
             </div>
           </div>
         </div>

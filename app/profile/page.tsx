@@ -1,12 +1,15 @@
 'use client'
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { logout, getCurrentUser } from "@/app/actions/auth";
+import SignOutModal from "../components/SignOut";
 
 export default function Profile() {
     const router = useRouter()
     const [email, setEmail] = useState('')
+    const [showSignOut, setShowSignOut] = useState(false)
 
     useEffect(() => {
         getCurrentUser().then(user => {
@@ -14,7 +17,7 @@ export default function Profile() {
         })
     }, [])
 
-    const handleSignOut = async () => {
+    const handleConfirmSignOut = async () => {
         await logout()
         router.push('/auth')
     }
@@ -38,10 +41,20 @@ export default function Profile() {
                     <div className="flex items-start justify-between mb-6">
                         <h2 className="text-xl font-bold">Account</h2>
 
-                        <button onClick={handleSignOut} className="flex items-center gap-1 text-sm font-medium hover:underline">
+                        <button
+                            onClick={() => setShowSignOut(true)}
+                            className="flex items-center gap-1 text-sm font-medium hover:underline"
+                        >
                             Sign Out
                             <span className="text-lg">↪</span>
                         </button>
+                        {showSignOut && (
+                            <SignOutModal
+                                onConfirm={handleConfirmSignOut}
+                                onCancel={() => setShowSignOut(false)}
+                            />
+                        )}
+
                     </div>
 
                     {/* Account Info */}
