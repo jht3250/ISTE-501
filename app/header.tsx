@@ -4,14 +4,14 @@ import Image from 'next/image'
 
 export function Header() {
   return (
-    <header className="flex flex-row items-center justify-between bg-[var(--color-blue-gray)] text-white w-full p-8 px-20">
+    <header className="flex flex-row items-center justify-between bg-[var(--color-blue-gray)] text-white w-full w-full p-8 md:px-20">
       <Link href="/" aria-label="Home">
         <Image
           src="/logo.png"
           alt="Genesee Land Trust Logo"
           width={128}
           height={128}
-          className="cursor-pointer"
+          className="cursor-pointer w-auto h-8 md:h-12"
         />
       </Link>
 
