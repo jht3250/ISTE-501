@@ -133,9 +133,11 @@ export default function Home() {
               </div>
             </div>
             <div className="mt-12 flex flex-col gap-4">
-              <button className="w-full px-4 py-2 bg-[#609EA0] text-white rounded hover:opacity-50 transition">
-                Upload Data
-              </button>
+              <Link href="/upload">
+                <button className="w-full px-4 py-2 bg-[#609EA0] text-white rounded hover:opacity-50 transition">
+                  Upload Data
+                </button>
+              </Link>
               <AddBoxModalWrapper />
             </div>
           </div>
