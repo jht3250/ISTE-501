@@ -81,7 +81,7 @@ export default function Reset() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full rounded bg-[#609EA0] text-white py-2 font-semibold hover:bg-blue-700 transition disabled:opacity-50"
+                            className="w-full rounded bg-[#609EA0] text-white py-2 font-semibold cursor-pointer hover:opacity-50 transition disabled:opacity-50"
                         >
                             {loading ? 'Sending...' : 'Send Code'}
                         </button>
@@ -147,7 +147,7 @@ export default function Reset() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full rounded bg-[#609EA0] text-white py-2 font-semibold hover:bg-blue-700 transition disabled:opacity-50"
+                            className="w-full rounded bg-[#609EA0] text-white py-2 font-semibold cursor-pointer hover:opacity-50 transition disabled:opacity-50"
                         >
                             {loading ? 'Resetting...' : 'Reset Password'}
                         </button>

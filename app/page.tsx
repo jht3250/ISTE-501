@@ -123,7 +123,7 @@ export default function Home() {
                 {notificationItems.map((item) => (
                   <button
                     key={item.id}
-                    className={`w-full text-left px-3 py-2 text-sm border-2 border-black rounded-2xl hover:opacity-50 transition flex items-center gap-2 ${item.highlighted ? "bg-[#9E2A2B] text-white" : "bg-[#D9D9D6]"
+                    className={`w-full text-left px-3 py-2 text-sm border-2 border-black rounded-2xl cursor-pointer hover:opacity-50 transition flex items-center gap-2 ${item.highlighted ? "bg-[#9E2A2B] text-white" : "bg-[#D9D9D6]"
                       }`}
                   >
                     <img src={item.icon} alt={item.label} className="w-6 h-6" />
@@ -134,7 +134,7 @@ export default function Home() {
             </div>
             <div className="mt-12 flex flex-col gap-4">
               <Link href="/upload">
-                <button className="w-full px-4 py-2 bg-[#609EA0] text-white rounded hover:opacity-50 transition">
+                <button className="w-full px-4 py-2 bg-[#609EA0] text-white rounded cursor-pointer hover:opacity-50 transition">
                   Upload Data
                 </button>
               </Link>

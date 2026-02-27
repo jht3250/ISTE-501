@@ -22,12 +22,13 @@ ChartJS.register(
 )
 
 export default function VisitsChart({ data }: { data: VisitCount[] }) {
+    const sorted = [...data].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     const chartData = {
-        labels: data.map(d => d.date),
+        labels: sorted.map(d => d.date),
         datasets: [
             {
                 label: 'Kestrel',
-                data: data.map(d => d.kestrel),
+                data: sorted.map(d => d.kestrel),
                 borderColor: '#D47456',
                 backgroundColor: '#D47456',
                 tension: 0.3,
@@ -35,7 +36,7 @@ export default function VisitsChart({ data }: { data: VisitCount[] }) {
             },
             {
                 label: 'Bat',
-                data: data.map(d => d.bat),
+                data: sorted.map(d => d.bat),
                 borderColor: '#F3BA45',
                 backgroundColor: '#F3BA45',
                 tension: 0.3,
@@ -43,7 +44,7 @@ export default function VisitsChart({ data }: { data: VisitCount[] }) {
             },
             {
                 label: 'Other',
-                data: data.map(d => d.other),
+                data: sorted.map(d => d.other),
                 borderColor: '#72B0E5',
                 backgroundColor: '#72B0E5',
                 tension: 0.3,
@@ -76,7 +77,8 @@ export default function VisitsChart({ data }: { data: VisitCount[] }) {
             },
             y: {
                 beginAtZero: true,
-                max: 5,
+                suggestedMax: 5,
+                max: Math.max(...chartData.datasets.flatMap(d => d.data)) + 2,
                 grid: {
                     color: '#e0e0e0',
                 },

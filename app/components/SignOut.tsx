@@ -11,14 +11,14 @@ export default function SignOutModal({ onConfirm, onCancel, }: { onConfirm: () =
                 <div className="flex gap-6">
                     <button
                         onClick={onConfirm}
-                        className="px-8 py-3 bg-red-800 text-white font-semibold rounded-sm hover:bg-red-900 transition"
+                        className="px-8 py-3 bg-red-800 text-white font-semibold rounded-sm cursor-pointer hover:bg-red-900 transition"
                     >
                         Sign Out
                     </button>
 
                     <button
                         onClick={onCancel}
-                        className="px-8 py-3 border border-black text-black font-semibold rounded-sm hover:bg-gray-100 transition"
+                        className="px-8 py-3 border border-black text-black font-semibold rounded-sm cursor-pointer hover:bg-gray-100 transition"
                     >
                         Cancel
                     </button>

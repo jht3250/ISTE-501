@@ -43,7 +43,7 @@ export default function Profile() {
 
                         <button
                             onClick={() => setShowSignOut(true)}
-                            className="flex items-center gap-1 text-sm font-medium hover:underline"
+                            className="flex items-center gap-1 text-sm font-medium cursor-pointer hover:underline"
                         >
                             Sign Out
                             <span className="text-lg">↪</span>
