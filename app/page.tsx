@@ -27,35 +27,40 @@ export default function Home() {
       label: 'Corrupted Data',
       active: notifications.corruptedData.length > 0,
       icon: '/data-alert-rounded.png',
-      highlighted: true
+      highlighted: true,
+      href: '/corrupted'
     },
     {
       id: 'unusedBox',
       label: 'Unused box',
       active: notifications.unusedBox.length > 0,
       icon: '/clock.png',
-      highlighted: false
+      highlighted: false,
+      href: `/box/${encodeURIComponent(notifications.unusedBox[0]?.box_name ?? '')}`
     },
     {
       id: 'unidentifiedSpecies',
       label: 'Unidentified Species',
       active: notifications.unidentifiedSpecies.length > 0,
       icon: '/question-fill.png',
-      highlighted: false
+      highlighted: false,
+      href: `/box/${encodeURIComponent(notifications.unidentifiedSpecies[0]?.box_name ?? '')}?event=${notifications.unidentifiedSpecies[0]?.event_id ?? ''}`
     },
     {
       id: 'lowBattery',
       label: 'Low Battery',
       active: notifications.lowBattery.length > 0,
       icon: '/battery-icon.png',
-      highlighted: false
+      highlighted: false,
+      href: `/box/${encodeURIComponent(notifications.lowBattery[0]?.box_name ?? '')}`
     },
     {
       id: 'disconnectedBox',
       label: 'Disconnected Box',
       active: notifications.disconnectedBox.length > 0,
       icon: '/signal.png',
-      highlighted: false
+      highlighted: false,
+      href: `/box/${encodeURIComponent(notifications.disconnectedBox[0]?.box_name ?? '')}`
     }
   ].filter(item => item.active);
 
@@ -121,14 +126,15 @@ export default function Home() {
               <h2 className="text-lg font-semibold mb-4">Notifications</h2>
               <div className="space-y-2 mb-6">
                 {notificationItems.map((item) => (
-                  <button
+                  <Link
                     key={item.id}
+                    href={item.href}
                     className={`w-full text-left px-3 py-2 text-sm border-2 border-black rounded-2xl cursor-pointer hover:opacity-50 transition flex items-center gap-2 ${item.highlighted ? "bg-[#9E2A2B] text-white" : "bg-[#D9D9D6]"
                       }`}
                   >
                     <img src={item.icon} alt={item.label} className="w-6 h-6" />
                     {item.label}
-                  </button>
+                  </Link>
                 ))}
               </div>
             </div>

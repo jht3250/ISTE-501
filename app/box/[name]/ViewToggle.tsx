@@ -1,5 +1,6 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import ListView from './ListView'
 import CalendarView from './CalendarView'
 import { EventRow } from '@/lib/types'
@@ -21,6 +22,18 @@ export default function ViewToggle({ events, boxName }: Props) {
     // Get current month/year
     const [year, setYear] = useState(() => new Date().getFullYear())
     const [month, setMonth] = useState(() => new Date().getMonth())
+
+    const searchParams = useSearchParams()
+    useEffect(() => {
+        const eventId = Number(searchParams.get('event'))
+        if (!eventId) return
+        const target = events.find(e => e.event_id === eventId)
+        if (!target) return
+        const d = new Date(target.timestamp * 1000)
+        setYear(d.getFullYear())
+        setMonth(d.getMonth())
+        setSelectedEvent(target)
+    }, [])
 
     const monthName = new Date(year, month).toLocaleString('default', {
         month: 'long',
