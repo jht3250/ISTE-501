@@ -1,76 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { SPECIES_COLORS } from "@/lib/speciesColors";
-import { EventRow } from "@/lib/types";
-
-
-export const events: EventRow[] = [
-
-    // corrupted box location
-    {
-        event_id: 202,
-        timestamp: 1770012720,
-        common_name: "Other",
-        box_name: "???",
-        image_url: "/images/bluebird/b1.jpg"
-    },
-
-    // corrupted image
-    {
-        event_id: 203,
-        timestamp: 1770057600,
-        common_name: "Kestrel",
-        box_name: "Salmon Creek",
-        image_url: null
-    },
-
-    // corrupted species + box
-    {
-        event_id: 204,
-        timestamp: 1770092580,
-        common_name: "ERROR_DATA",
-        box_name: "Disconnected Box",
-        image_url: "/images/bluebird/b2.jpg"
-    },
-
-    // corrupted timestamp + image
-    {
-        event_id: 205,
-        timestamp: 9999999999999,
-        common_name: "Bat",
-        box_name: "Salmon Creek",
-        image_url: ""
-    },
-
-    // corrupted box + species
-    {
-        event_id: 206,
-        timestamp: 1770201900,
-        common_name: "N/A",
-        box_name: "Invalid Coordinates",
-        image_url: "/images/sparrow/s1.jpg"
-    },
-
-    // corrupted timestamp (NaN)
-    {
-        event_id: 207,
-        timestamp: Number.NaN as unknown as number,
-        common_name: "Bat",
-        box_name: "Salmon Creek",
-        image_url: "/images/kestrel/k2.jpg"
-    },
-
-    // corrupted everything except timestamp
-    {
-        event_id: 208,
-        timestamp: 1770310800,
-        common_name: "???",
-        box_name: "Box Not Found",
-        image_url: null
-    }
-]
+import { getCorruptedEvents } from "@/lib/queries";
+import { deleteEvent, deleteAllCorrupted } from "@/app/actions/delete";
 
 export default function CorruptedPage() {
+    const events = getCorruptedEvents()
 
     return (
         <main className="m-10 mx-20">
@@ -84,18 +19,15 @@ export default function CorruptedPage() {
                     <span className='hover:underline text-xl font-[var(--font-noto-serif)]'>Corrupted Data</span>
                 </Link>
 
-                <div className="flex rounded-md bg-[#9E2A2B] px-4 py-2 text-sm font-medium text-white hover:bg-red-900 cursor-pointer">
-                    <Image
-                        src="/trash-icon.png"
-                        alt="Trash Icon"
-                        width={24}
-                        height={24}
-                    />
-                    <button className="cursor-pointer"> {/* // onClick={handleDelete}> */}
+                <form action={deleteAllCorrupted}>
+                    <button
+                        type="submit"
+                        className="flex rounded-md bg-[#9E2A2B] px-4 py-2 text-sm font-medium text-white hover:bg-red-900 cursor-pointer items-center gap-2"
+                    >
+                        <Image src="/trash-icon.png" alt="Trash Icon" width={24} height={24} />
                         Delete All Corrupted Data
                     </button>
-                </div>
-
+                </form>
             </div>
 
             {/* Table section */}
@@ -114,10 +46,8 @@ export default function CorruptedPage() {
 
                     <tbody>
                         {events.map((event, index) => {
-                            // detects validity of each field
                             const date = new Date(event.timestamp * 1000)
-                            const validDate = !isNaN(date.getTime())
-
+                            const validDate = event.timestamp > 0 && !isNaN(date.getTime())
                             const validSpecies = Boolean(SPECIES_COLORS[event.common_name])
                             const validBox =
                                 event.box_name &&
@@ -125,9 +55,7 @@ export default function CorruptedPage() {
                                 !event.box_name.toLowerCase().includes("invalid") &&
                                 !event.box_name.toLowerCase().includes("disconnected") &&
                                 !event.box_name.toLowerCase().includes("not found")
-
                             const validImage = Boolean(event.image_url)
-
                             const corruptedStyle = "text-red-600 font-semibold"
 
                             return (
@@ -137,9 +65,12 @@ export default function CorruptedPage() {
                                 >
                                     {/* Delete button */}
                                     <td className="border px-3 py-2">
-                                        <button className="cursor-pointer hover:opacity-70">
-                                            <img src="/delete-icon.png" className="w-6 h-6 mx-auto" />
-                                        </button>
+                                        <form action={deleteEvent}>
+                                            <input type="hidden" name="eventId" value={event.event_id} />
+                                            <button type="submit" className="cursor-pointer hover:opacity-70">
+                                                <img src="/delete-icon.png" className="w-6 h-6 mx-auto" />
+                                            </button>
+                                        </form>
                                     </td>
 
                                     {/* Date */}
@@ -196,9 +127,8 @@ export default function CorruptedPage() {
                             )
                         })}
 
-
-                        {/* Add 8 empty rows */}
-                        {[...Array(5)].map((_, index) => {
+                        {/* Fill remaining rows */}
+                        {[...Array(Math.max(0, 5 - events.length))].map((_, index) => {
                             const rowIndex = events.length + index
                             return (
                                 <tr key={`empty-${index}`} className={rowIndex % 2 === 0 ? 'bg-[#f2f2f1]' : 'bg-[#e0dbd7]'}>
@@ -217,5 +147,4 @@ export default function CorruptedPage() {
 
         </main>
     )
-
 }

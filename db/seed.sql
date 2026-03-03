@@ -117,7 +117,7 @@ INSERT INTO event (
 
 -- === NOTIFICATION TEST DATA ===
 
--- Unused box: Box C with no recent events (last event 45 days ago)
+-- Unused box: Box C (box_id = 3) with no recent events (last event 45 days ago)
 INSERT INTO bird_box (
   name, location_lat, location_lng,
   status, status_updated_at, installed_at, notes
@@ -135,14 +135,6 @@ INSERT INTO event (
 ) VALUES
 (3, 3, 1, strftime('%s', 'now', '-45 days'), '/images/kestrel/k_old.jpg', 1, 22.0);
 
--- Corrupted data: events with NULL or empty image_url
-INSERT INTO event (
-  device_id, box_id, species_id, timestamp, image_url, occupancy_flag, temperature
-) VALUES
-(1, 1, 1, strftime('%s','2026-02-10 08:00:00'), NULL, 1, 23.0),
-(2, 2, 2, strftime('%s','2026-02-11 09:30:00'), '', 0, 19.5),
-(1, 1, 3, strftime('%s','2026-02-12 10:15:00'), NULL, 1, 21.0);
-
 -- Power log entries (includes low battery readings)
 INSERT INTO power_log (
   device_id, timestamp, battery_voltage, status
@@ -157,7 +149,7 @@ INSERT INTO power_log (
 (3, strftime('%s', 'now', '-10 days'), 4.0, 'ok'),
 (3, strftime('%s', 'now'), 3.2, 'critical');
 
--- Disconnected box: Box D with device last seen 72 hours ago
+-- Disconnected box: Box D (box_id = 4) with device last seen 72 hours ago
 INSERT INTO bird_box (
   name, location_lat, location_lng,
   status, status_updated_at, installed_at, notes
@@ -174,3 +166,45 @@ INSERT INTO event (
   device_id, box_id, species_id, timestamp, image_url, occupancy_flag, temperature
 ) VALUES
 (4, 4, 1, strftime('%s', 'now', '-80 hours'), '/images/kestrel/k_disc.jpg', 1, 22.5);
+
+
+-- === CORRUPTED DATA TEST DATA ===
+-- Boxes A-D are IDs 1-4, so corrupted boxes start at 5
+
+-- Corrupted box locations (box_id = 5, 6)
+INSERT INTO bird_box (name, location_lat, location_lng, status, status_updated_at, installed_at, notes) VALUES
+('Invalid Location', 43.0850, -77.6720, 'active', strftime('%s','now'), strftime('%s','now'), NULL),
+('???', 43.0870, -77.6710, 'active', strftime('%s','now'), strftime('%s','now'), NULL);
+
+-- Devices for corrupted boxes (device_id = 5, 6)
+INSERT INTO device (box_id, serial_number, power_type, last_seen_at, maintenance_status) VALUES
+(5, 'DEV-005', 'solar', strftime('%s','now'), 'ok'),
+(6, 'DEV-006', 'battery', strftime('%s','now'), 'ok');
+
+-- Unrecognized species (species_id = 4, 5)
+INSERT INTO species (names) VALUES ('Unknown Bird'), ('ERROR_SPECIES');
+
+-- 1. Corrupted image (NULL)
+INSERT INTO event (device_id, box_id, species_id, timestamp, image_url, occupancy_flag, temperature) VALUES
+(1, 1, 1, strftime('%s', 'now', '-1 day'), NULL, 1, 22.0),
+(2, 2, 2, strftime('%s', 'now', '-2 days'), NULL, 0, 18.5);
+
+-- 2. Corrupted image (empty string)
+INSERT INTO event (device_id, box_id, species_id, timestamp, image_url, occupancy_flag, temperature) VALUES
+(1, 1, 3, strftime('%s', 'now', '-3 days'), '', 1, 21.0),
+(2, 2, 1, strftime('%s', 'now', '-4 days'), '', 1, 23.5);
+
+-- 3. Corrupted timestamp (0)
+INSERT INTO event (device_id, box_id, species_id, timestamp, image_url, occupancy_flag, temperature) VALUES
+(1, 1, 1, 0, '/images/kestrel/k1.jpg', 1, 20.0),
+(2, 2, 2, 0, '/images/bat/b1.jpg', 0, 19.0);
+
+-- 4. Corrupted species
+INSERT INTO event (device_id, box_id, species_id, timestamp, image_url, occupancy_flag, temperature) VALUES
+(1, 1, (SELECT species_id FROM species WHERE names = 'Unknown Bird'), strftime('%s', 'now', '-1 day'), '/images/kestrel/k2.jpg', 1, 21.5),
+(2, 2, (SELECT species_id FROM species WHERE names = 'ERROR_SPECIES'), strftime('%s', 'now', '-2 days'), '/images/other/o1.jpg', 1, 20.5);
+
+-- 5. Corrupted box location
+INSERT INTO event (device_id, box_id, species_id, timestamp, image_url, occupancy_flag, temperature) VALUES
+(5, 5, 1, strftime('%s', 'now', '-1 day'), '/images/kestrel/k3.jpg', 1, 23.0),
+(6, 6, 2, strftime('%s', 'now', '-2 days'), '/images/bat/b2.jpg', 0, 17.5);
