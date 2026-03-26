@@ -63,6 +63,7 @@ export default function Home() {
       href: `/box/${encodeURIComponent(notifications.disconnectedBox[0]?.box_name ?? '')}`
     }
   ].filter(item => item.active);
+  // ];
 
   const seasonalReminder = false;
   // TODO: Implement seasonal reminder logic based on current date and season end date
@@ -125,17 +126,21 @@ export default function Home() {
             <div className="bg-[#D9D9D6] border border-zinc-200 p-6 h-150 shadow-lg">
               <h2 className="text-lg font-semibold mb-4">Notifications</h2>
               <div className="space-y-2 mb-6">
-                {notificationItems.map((item) => (
-                  <Link
-                    key={item.id}
-                    href={item.href}
-                    className={`w-full text-left px-3 py-2 text-sm border-2 border-black rounded-2xl cursor-pointer hover:opacity-50 transition flex items-center gap-2 ${item.highlighted ? "bg-[#9E2A2B] text-white" : "bg-[#D9D9D6]"
-                      }`}
-                  >
-                    <img src={item.icon} alt={item.label} className="w-6 h-6" />
-                    {item.label}
-                  </Link>
-                ))}
+                {notificationItems.length === 0 ? (
+                  <p className="text-md text-center text-zinc-500 italic px-1 ">No current notifications</p>
+                ) : (
+                  notificationItems.map((item) => (
+                    <Link
+                      key={item.id}
+                      href={item.href}
+                      className={`w-full text-left px-3 py-2 text-sm border-2 border-black rounded-2xl cursor-pointer hover:opacity-50 transition flex items-center gap-2 ${item.highlighted ? "bg-[#9E2A2B] text-white" : "bg-[#D9D9D6]"
+                        }`}
+                    >
+                      <img src={item.icon} alt={item.label} className="w-6 h-6" />
+                      {item.label}
+                    </Link>
+                  ))
+                )}
               </div>
             </div>
             <div className="mt-12 flex flex-col gap-4">
