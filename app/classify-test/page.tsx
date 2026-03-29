@@ -1,11 +1,5 @@
 "use client";
-import { useState } from "react";
-
-const EXISTING_IMAGES = [
-  ...["b1","b2","b3","b4","b5","b6"].map(n => ({ label: `Bat - ${n}`, path: `/images/bat/${n}.jpg` })),
-  ...["k1","k2","k3","k4","k5","k6","k7","k8","k9","k10"].map(n => ({ label: `Kestrel - ${n}`, path: `/images/kestrel/${n}.jpg` })),
-  ...["o1","o2","o3","o4","o5","o6","o7","o8","o9","o10"].map(n => ({ label: `Other - ${n}`, path: `/images/other/${n}.jpg` })),
-];
+import { useState, useEffect } from "react";
 
 const DEVICES = ["DEV-001","DEV-002","DEV-003","DEV-004","DEV-005","DEV-006"];
 
@@ -24,8 +18,18 @@ interface ClassifyResult {
 }
 
 export default function ClassifyTest() {
-  const [selectedImage, setSelectedImage] = useState(EXISTING_IMAGES[0].path);
+  const [images, setImages] = useState<{ label: string; path: string }[]>([]);
+  const [selectedImage, setSelectedImage] = useState("");
   const [selectedDevice, setSelectedDevice] = useState(DEVICES[0]);
+
+  useEffect(() => {
+    fetch("/api/images")
+      .then(r => r.json())
+      .then(data => {
+        setImages(data);
+        if (data.length > 0) setSelectedImage(data[0].path);
+      });
+  }, []);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ClassifyResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -73,15 +77,17 @@ export default function ClassifyTest() {
           value={selectedImage}
           onChange={e => { setSelectedImage(e.target.value); setResult(null); setError(null); }}
         >
-          {EXISTING_IMAGES.map(img => (
+          {images.map(img => (
             <option key={img.path} value={img.path}>{img.label}</option>
           ))}
         </select>
-        <img
-          src={selectedImage}
-          alt="Preview"
-          className="w-full max-h-52 object-contain rounded-lg bg-slate-800 border border-slate-700"
-        />
+        {selectedImage && (
+          <img
+            src={selectedImage}
+            alt="Preview"
+            className="w-full max-h-52 object-contain rounded-lg bg-slate-800 border border-slate-700"
+          />
+        )}
       </div>
 
       {/* Device picker */}
