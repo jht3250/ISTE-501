@@ -63,15 +63,15 @@ export default function ClassifyTest() {
   return (
     <div className="max-w-xl mx-auto p-6 space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-100">Classify & Save</h1>
-        <p className="text-slate-400 text-sm mt-1">
+        <h1 className="text-2xl font-bold text-black">Classify & Save</h1>
+        <p className="text-gray-600 text-sm mt-1">
           Select an image and a device to classify it and save the event to the database.
         </p>
       </div>
 
       {/* Image picker */}
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-slate-300">Image</label>
+        <label className="block text-sm font-medium text-black">Image</label>
         <select
           className="w-full bg-slate-800 border border-slate-600 rounded-lg p-2 text-sm text-slate-200"
           value={selectedImage}
@@ -92,7 +92,7 @@ export default function ClassifyTest() {
 
       {/* Device picker */}
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-slate-300">Device</label>
+        <label className="block text-sm font-medium text-black">Device</label>
         <select
           className="w-full bg-slate-800 border border-slate-600 rounded-lg p-2 text-sm text-slate-200"
           value={selectedDevice}
@@ -105,7 +105,7 @@ export default function ClassifyTest() {
       <button
         onClick={handleClassify}
         disabled={loading}
-        className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
+        className="w-full bg-[#6489a0] hover:bg-[#508090] disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-2.5 px-4 rounded-lg transition-colors"
       >
         {loading ? "Classifying..." : "Classify & Save to Database"}
       </button>

@@ -19,13 +19,13 @@ export default function ProcessingPage() {
     // }, [router])
 
     return (
-        <div className="flex justify-center items-center min-h-[calc(100vh-128px)]">
+        <div className="flex justify-center items-center min-h-[calc(100vh-128px)] px-4">
             <div className="text-center">
-                <h2 className="text-2xl font-bold mb-8">Loading...</h2>
-                <div className="mb-8">
-                    <div className="w-26 h-26 mx-auto border-6 border-gray-300 border-t-[#609EA0] rounded-full animate-spin"></div>
+                <h2 className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8">Loading...</h2>
+                <div className="mb-6 sm:mb-8">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto border-4 sm:border-6 border-gray-300 border-t-[#609EA0] rounded-full animate-spin"></div>
                 </div>
-                <p className="text-gray-600">We are processing data to assemble your dashboard. Please be patient.</p>
+                <p className="text-gray-600 text-sm sm:text-base max-w-md mx-auto">We are processing data to assemble your dashboard. Please be patient.</p>
             </div>
         </div>
     )
