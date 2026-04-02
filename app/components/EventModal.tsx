@@ -58,7 +58,7 @@ export default function EventModal({
                     X
                 </button>
 
-                <div className="mb-6 text-xl font-[var(--font-noto-serif)] flex items-center justify-center gap-2">
+                <div className="mb-2 text-xl font-[var(--font-noto-serif)] flex items-center justify-center gap-2">
                     {isEditing ? (
                         <select
                             value={editedData.common_name}
@@ -82,6 +82,18 @@ export default function EventModal({
                         onClick={() => setIsEditing(!isEditing)}
                     />
                 </div>
+
+                {event.confidence != null && (
+                    <div className="mb-4 px-1">
+                        <p className="text-xs text-gray-400 mb-1">{event.confidence.toFixed(1)}% confidence</p>
+                        <div className="w-full h-2.5 rounded-full bg-[#D9D9D6] overflow-hidden">
+                            <div
+                                className="h-full rounded-full"
+                                style={{ width: `${event.confidence}%`, backgroundColor: '#6BA4A6' }}
+                            />
+                        </div>
+                    </div>
+                )}
 
                 <div className="space-y-2 text-sm">
                     <div>

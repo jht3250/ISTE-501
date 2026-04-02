@@ -67,7 +67,6 @@ export default function Profile() {
                         <div className="flex items-center gap-2">
                             <span className="font-medium">Password:</span>
                             <span>••••••••••</span>
-                            <button className="text-xs opacity-70">👁</button>
                         </div>
 
                         <Link
@@ -78,7 +77,7 @@ export default function Profile() {
                         </Link>
                     </div>
 
-                    {/* MFA Section */}
+                    {/* MFA Section
                     <div>
                         <h3 className="text-lg font-bold mb-3">
                             Multi-Factor Authentication
@@ -102,7 +101,7 @@ export default function Profile() {
                                 Duo Push
                             </label>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </main>

@@ -72,8 +72,8 @@ export async function POST(req: NextRequest) {
   // Insert event into database
   const result = db
     .prepare(
-      `INSERT INTO event (device_id, box_id, species_id, timestamp, image_url, occupancy_flag, temperature)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO event (device_id, box_id, species_id, timestamp, image_url, occupancy_flag, temperature, confidence)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       device.device_id,
@@ -82,7 +82,8 @@ export async function POST(req: NextRequest) {
       timestamp,
       imageUrl,
       occupancy ? parseInt(occupancy) : 1,
-      temperature ? parseFloat(temperature) : null
+      temperature ? parseFloat(temperature) : null,
+      mlResult.confidence
     );
 
   return NextResponse.json({

@@ -17,7 +17,8 @@ export function getEvents(): EventRow[] {
         e.timestamp,
         s.names as common_name,
         b.name AS box_name,
-        e.image_url
+        e.image_url,
+        e.confidence
       FROM event e
       JOIN species s ON e.species_id = s.species_id
       JOIN bird_box b ON e.box_id = b.box_id
@@ -142,7 +143,8 @@ export function getCorruptedEvents(): EventRow[] {
         e.timestamp,
         s.names as common_name,
         b.name AS box_name,
-        e.image_url
+        e.image_url,
+        e.confidence
       FROM event e
       JOIN species s ON e.species_id = s.species_id
       JOIN bird_box b ON e.box_id = b.box_id
