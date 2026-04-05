@@ -4,6 +4,7 @@ export type EventRow = {
   common_name: string
   box_name: string
   image_url?: string | null
+  confidence?: number | null
 }
 
 export type VisitCount = {

@@ -11,6 +11,8 @@
     "electron:build": "next build && electron-builder"
   },
   "dependencies": {
+    "@types/adm-zip": "^0.5.8",
+    "adm-zip": "^0.5.17",
     "better-sqlite3": "^12.6.2",
     "chart.js": "^4.5.1",
     "csv-parse": "^6.1.0",

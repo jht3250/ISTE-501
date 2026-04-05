@@ -43,6 +43,7 @@ CREATE TABLE event (
     image_url TEXT,
     occupancy_flag INTEGER NOT NULL,
     temperature REAL,
+    confidence REAL,
     FOREIGN KEY (device_id) REFERENCES device(device_id) ON DELETE CASCADE,
     FOREIGN KEY (box_id) REFERENCES bird_box(box_id) ON DELETE CASCADE,
     FOREIGN KEY (species_id) REFERENCES species(species_id) ON DELETE RESTRICT
