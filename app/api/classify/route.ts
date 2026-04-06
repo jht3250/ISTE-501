@@ -15,6 +15,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing file or serial_number" }, { status: 400 });
   }
 
+  const mlDir = process.env.ML_PATH || join(process.cwd(), 'ml')
+  const scriptPath = join(mlDir, 'classify.py')
+
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
 
@@ -26,7 +29,6 @@ export async function POST(req: NextRequest) {
 
   let mlResult: { species: string; confidence: number; all_probs: Record<string, number> };
   try {
-    const scriptPath = join(process.cwd(), "ml", "classify.py");
     const proc = spawnSync("python", [scriptPath, tmpPath], {
       encoding: "utf-8",
       timeout: 30000,
