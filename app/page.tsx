@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from 'next/link'
 import VisitsChart from "./components/ui/VisitsChart";
 import { aggregateByDate } from "@/lib/aggregate";
-import { getEvents, getAllNotifications } from "@/lib/queries";
+import { getEvents, getAllNotifications, getBoxes } from "@/lib/queries";
 import { ProgressBar } from "./components/ui/ProgressBar";
 import SeasonalReminder from "./components/ui/Seasonal";
 import AddBoxModalWrapper from "./components/AddBox";
@@ -10,14 +10,7 @@ import AddBoxModalWrapper from "./components/AddBox";
 export default function Home() {
 
   const events = getEvents()
-
-  const locations = [
-    { name: "Salmon Creek", href: "/box", image: "/SalmonCreek.png" },
-    { name: "Irene Gossin", href: "/box", image: "/IreneGossin.png" },
-    { name: "Macyville Woods", href: "/box", image: "/MacyvilleWoods.png" },
-    { name: "Corbett's Glen", href: "/box", image: "/CorbettGlen.png" },
-    { name: "Kraai Preserve", href: "/box", image: "/KraaiPreserve.png" }
-  ];
+  const locations = getBoxes()
 
   const notifications = getAllNotifications()
 
@@ -82,7 +75,7 @@ export default function Home() {
                   className="relative w-full aspect-square border-2 border-black bg-zinc-100 hover:bg-zinc-200 hover:shadow-md transition overflow-hidden"
                 >
                   <img
-                    src={location.image}
+                    src={location.image_url ?? '/placeholder-box.png'}
                     alt={location.name}
                     style={{
                       width: '100%',
@@ -94,26 +87,14 @@ export default function Home() {
                     <span className="text-black font-medium text-lg font-[var(--font-noto-serif)] drop-shadow-lg">{location.name}</span>
                     <span className="text-black text-lg font-[var(--font-noto-serif)] drop-shadow-lg">00.000.000</span>
                   </div>
-                  {location.name === "Salmon Creek" && (
-                    <img
-                      src="/signal.png"
-                      alt="Signal"
-                      className="absolute bottom-2 right-2 w-8 h-8"
-                    />
+                  {notifications.disconnectedBox.some(n => n.box_name === location.name) && (
+                    <img src="/signal.png" alt="Disconnected" className="absolute bottom-2 right-2 w-8 h-8" />
                   )}
-                  {location.name === "Macyville Woods" && (
-                    <img
-                      src="/battery-icon.png"
-                      alt="Battery"
-                      className="absolute bottom-2 right-2 w-8 h-8"
-                    />
+                  {notifications.lowBattery.some(n => n.box_name === location.name) && (
+                    <img src="/battery-icon.png" alt="Low Battery" className="absolute bottom-2 right-2 w-8 h-8" />
                   )}
-                  {location.name === "Kraai Preserve" && (
-                    <img
-                      src="/clock.png"
-                      alt="Clock"
-                      className="absolute bottom-2 right-2 w-8 h-8"
-                    />
+                  {notifications.unusedBox.some(n => n.box_name === location.name) && (
+                    <img src="/clock.png" alt="Unused" className="absolute bottom-2 right-2 w-8 h-8" />
                   )}
                 </Link>
               ))}

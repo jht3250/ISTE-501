@@ -1,6 +1,6 @@
 // server-side data fetching
 export const runtime = 'nodejs'
-import { getEvents } from '@/lib/queries'
+import { getEventsByBox } from '@/lib/queries'
 import ViewToggle from './ViewToggle'
 
 type Props = {
@@ -15,7 +15,7 @@ export default async function EventsPage({ params }: Props) {
 
   // console.log('PAGE boxName:', boxName)
 
-  const events = getEvents()
+  const events = getEventsByBox(boxName)
 
   return <ViewToggle events={events} boxName={boxName} />
 }

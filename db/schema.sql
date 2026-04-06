@@ -16,7 +16,8 @@ CREATE TABLE bird_box (
     status TEXT NOT NULL,
     status_updated_at INTEGER NOT NULL,
     installed_at INTEGER NOT NULL,
-    notes TEXT
+    notes TEXT,
+    image_url TEXT
 );
 
 CREATE TABLE device (

@@ -9,6 +9,17 @@ import {
   AllNotifications
 } from './types'
 
+export function getBoxes(): { box_id: number; name: string; image_url: string | null }[] {
+  return db
+    .prepare(`
+      SELECT box_id, name, image_url
+      FROM bird_box
+      WHERE name NOT IN ('Invalid Location', '???')
+      ORDER BY box_id ASC
+    `)
+    .all() as { box_id: number; name: string; image_url: string | null }[]
+}
+
 export function getEvents(): EventRow[] {
   const rows = db
     .prepare(`
@@ -26,7 +37,27 @@ export function getEvents(): EventRow[] {
     `)
     .all()
 
-  // Type assertion
+  return rows as EventRow[]
+}
+
+export function getEventsByBox(boxName: string): EventRow[] {
+  const rows = db
+    .prepare(`
+      SELECT
+        e.event_id,
+        e.timestamp,
+        s.names as common_name,
+        b.name AS box_name,
+        e.image_url,
+        e.confidence
+      FROM event e
+      JOIN species s ON e.species_id = s.species_id
+      JOIN bird_box b ON e.box_id = b.box_id
+      WHERE b.name = ?
+      ORDER BY e.timestamp DESC
+    `)
+    .all(boxName)
+
   return rows as EventRow[]
 }
 

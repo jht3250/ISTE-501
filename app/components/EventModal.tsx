@@ -83,7 +83,7 @@ export default function EventModal({
                     />
                 </div>
 
-                {event.confidence != null && (
+                {event.confidence != null && event.image_url && (
                     <div className="mb-4 px-1">
                         <p className="text-xs text-gray-400 mb-1">{event.confidence.toFixed(1)}% confidence</p>
                         <div className="w-full h-2.5 rounded-full bg-[#D9D9D6] overflow-hidden">
