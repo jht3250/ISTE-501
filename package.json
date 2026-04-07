@@ -11,10 +11,12 @@
     "electron:build": "next build && electron-builder"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^4.3.3",
     "@types/adm-zip": "^0.5.8",
     "adm-zip": "^0.5.17",
     "better-sqlite3": "^12.6.2",
     "chart.js": "^4.5.1",
+    "chartjs-node-canvas": "^5.0.0",
     "csv-parse": "^6.1.0",
     "drizzle-kit": "^0.31.8",
     "drizzle-orm": "^0.45.1",
