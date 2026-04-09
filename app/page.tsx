@@ -7,11 +7,13 @@ import { ProgressBar } from "./components/ui/ProgressBar";
 import SeasonalReminder from "./components/ui/Seasonal";
 import AddBoxModalWrapper from "./components/AddBox";
 import DeleteBoxButton from "./components/DeleteBoxButton";
+import HomeClient from "./components/HomeClient";
 
 export default function Home() {
 
   const events = getEvents()
   const locations = getBoxes()
+  const visitCounts = aggregateByDate(events)
 
   const notifications = getAllNotifications()
 
@@ -138,8 +140,10 @@ export default function Home() {
         </div>
 
         {/* Charts.js Section */}
-        <VisitsChart data={aggregateByDate(events)} />
+        {/* <VisitsChart data={aggregateByDate(events)} /> */}
 
+        <HomeClient events={events} visitCounts={visitCounts} />
+      
         {/* Storage Progress Section */}
         <div className="mt-12 px-12 flex justify-around gap-8">
           <div className="flex flex-col gap-2 w-full">
