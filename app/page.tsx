@@ -6,6 +6,7 @@ import { getEvents, getAllNotifications, getBoxes } from "@/lib/queries";
 import { ProgressBar } from "./components/ui/ProgressBar";
 import SeasonalReminder from "./components/ui/Seasonal";
 import AddBoxModalWrapper from "./components/AddBox";
+import DeleteBoxButton from "./components/DeleteBoxButton";
 
 export default function Home() {
 
@@ -72,7 +73,7 @@ export default function Home() {
                 <Link
                   key={location.name}
                   href={`/box/${encodeURIComponent(location.name)}`}
-                  className="relative w-full aspect-square border-2 border-black bg-zinc-100 hover:bg-zinc-200 hover:shadow-md transition overflow-hidden"
+                  className="group relative w-full aspect-square border-2 border-black bg-zinc-100 hover:bg-zinc-200 hover:shadow-md transition overflow-hidden"
                 >
                   <img
                     src={location.image_url ?? '/placeholder-box.png'}
@@ -85,7 +86,7 @@ export default function Home() {
                   />
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <span className="text-black font-medium text-lg font-[var(--font-noto-serif)] drop-shadow-lg">{location.name}</span>
-                    <span className="text-black text-lg font-[var(--font-noto-serif)] drop-shadow-lg">00.000.000</span>
+                    <span className="text-black text-sm font-mono drop-shadow-lg">{location.serial_number ?? '—'}</span>
                   </div>
                   {notifications.disconnectedBox.some(n => n.box_name === location.name) && (
                     <img src="/signal.png" alt="Disconnected" className="absolute bottom-2 right-2 w-8 h-8" />
@@ -96,6 +97,7 @@ export default function Home() {
                   {notifications.unusedBox.some(n => n.box_name === location.name) && (
                     <img src="/clock.png" alt="Unused" className="absolute bottom-2 right-2 w-8 h-8" />
                   )}
+                  <DeleteBoxButton boxId={location.box_id} boxName={location.name} />
                 </Link>
               ))}
             </div>

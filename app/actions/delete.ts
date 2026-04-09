@@ -3,6 +3,12 @@
 import db from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 
+export async function deleteBox(boxId: number) {
+    // CASCADE in schema deletes all events + devices for this box
+    db.prepare('DELETE FROM bird_box WHERE box_id = ?').run(boxId)
+    revalidatePath('/')
+}
+
 export async function deleteEvent(formData: FormData) {
     const eventId = Number(formData.get('eventId'))
     db.prepare('DELETE FROM event WHERE event_id = ?').run(eventId)

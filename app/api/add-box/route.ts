@@ -6,15 +6,12 @@ import db from "@/lib/db";
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
   const name = (formData.get("name") as string | null)?.trim();
-  const lat = parseFloat(formData.get("lat") as string);
-  const lng = parseFloat(formData.get("lng") as string);
+  const lat = parseFloat(formData.get("lat") as string) || 0;
+  const lng = parseFloat(formData.get("lng") as string) || 0;
   const imageFile = formData.get("image") as File | null;
 
   if (!name) {
     return NextResponse.json({ error: "Box name is required" }, { status: 400 });
-  }
-  if (isNaN(lat) || isNaN(lng)) {
-    return NextResponse.json({ error: "Valid coordinates are required" }, { status: 400 });
   }
 
   // Check for duplicate name
@@ -50,7 +47,7 @@ export async function POST(req: NextRequest) {
   const boxId = boxResult.lastInsertRowid;
 
   // Auto-generate a device serial and insert it
-  const serial = `DEV-${String(boxId).padStart(3, "0")}-${now}`;
+  const serial = `DEV-${String(boxId).padStart(3, "0")}`;
   db.prepare(
     `INSERT INTO device (box_id, serial_number, power_type, last_seen_at, maintenance_status)
      VALUES (?, ?, 'solar', ?, 'ok')`

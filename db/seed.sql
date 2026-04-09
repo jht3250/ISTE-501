@@ -21,9 +21,9 @@ INSERT INTO device (box_id, serial_number, power_type, last_seen_at, maintenance
 (2, 'DEV-002',    'battery', strftime('%s','now'),            'ok'),
 (3, 'DEV-003',    'solar',   strftime('%s','now'),            'ok'),
 (4, 'DEV-004',    'battery', strftime('%s', 'now', '-72 hours'), 'issue'),
-(5, 'DEV-KP-001', 'solar',   strftime('%s','now'),            'ok'),
-(6, 'DEV-005',    'solar',   strftime('%s','now'),            'ok'),
-(7, 'DEV-006',    'battery', strftime('%s','now'),            'ok');
+(5, 'DEV-005',    'solar',   strftime('%s','now'),            'ok'),
+(6, 'DEV-006',    'solar',   strftime('%s','now'),            'ok'),
+(7, 'DEV-007',    'battery', strftime('%s','now'),            'ok');
 
 -- ============================================================
 -- Species

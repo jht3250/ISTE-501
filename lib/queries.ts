@@ -9,15 +9,16 @@ import {
   AllNotifications
 } from './types'
 
-export function getBoxes(): { box_id: number; name: string; image_url: string | null }[] {
+export function getBoxes(): { box_id: number; name: string; image_url: string | null; serial_number: string | null }[] {
   return db
     .prepare(`
-      SELECT box_id, name, image_url
-      FROM bird_box
-      WHERE name NOT IN ('Invalid Location', '???')
-      ORDER BY box_id ASC
+      SELECT b.box_id, b.name, b.image_url, d.serial_number
+      FROM bird_box b
+      LEFT JOIN device d ON b.box_id = d.box_id
+      WHERE b.name NOT IN ('Invalid Location', '???')
+      ORDER BY b.box_id ASC
     `)
-    .all() as { box_id: number; name: string; image_url: string | null }[]
+    .all() as { box_id: number; name: string; image_url: string | null; serial_number: string | null }[]
 }
 
 export function getEvents(): EventRow[] {

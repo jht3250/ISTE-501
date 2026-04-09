@@ -18,24 +18,8 @@ export default function AddBoxModalWrapper() {
     setLoading(true);
     setError(null);
 
-    // Get current geolocation
-    let lat: number, lng: number;
-    try {
-      const pos = await new Promise<GeolocationPosition>((resolve, reject) =>
-        navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 10000 })
-      );
-      lat = pos.coords.latitude;
-      lng = pos.coords.longitude;
-    } catch {
-      setError("Could not get your location. Please allow location access and try again.");
-      setLoading(false);
-      return;
-    }
-
     const formData = new FormData();
     formData.append("name", boxName.trim());
-    formData.append("lat", String(lat));
-    formData.append("lng", String(lng));
     if (imageFile) formData.append("image", imageFile);
 
     try {
@@ -132,11 +116,6 @@ export default function AddBoxModalWrapper() {
                 )}
               </div>
             </div>
-
-            <p className="text-red-600 text-sm">
-              REMEMBER: you must be standing at or near the location of the bird box
-              to ensure the correct geo-coordinates are stored.
-            </p>
 
             {error && <p className="text-red-600 text-sm">{error}</p>}
 
