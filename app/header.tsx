@@ -11,7 +11,7 @@ export function Header() {
     <header className="flex flex-row items-center justify-between bg-[var(--color-blue-gray)] text-white w-full w-full p-8 md:px-20">
       <Link href="/" aria-label="Home">
         <Image
-          src="/logo.png"
+          src="/logo-landtrust.png"
           alt="Genesee Land Trust Logo"
           width={128}
           height={128}
