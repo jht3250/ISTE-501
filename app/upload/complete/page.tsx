@@ -18,7 +18,7 @@ export default function CompletePage() {
                     <div className="mt-6 space-y-3">
                         <button 
                             onClick={() => window.location.href = '/'}
-                            className="w-full px-6 py-3 bg-[#609EA0] text-white rounded hover:bg-blue-700 transition"
+                            className="w-full px-6 py-3 bg-[#609EA0] text-white rounded hover:opacity-50 transition"
                         >
                             Go to Dashboard
                         </button>
