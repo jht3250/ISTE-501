@@ -55,6 +55,10 @@ export function getEventsByBox(boxName: string): EventRow[] {
       JOIN species s ON e.species_id = s.species_id
       JOIN bird_box b ON e.box_id = b.box_id
       WHERE b.name = ?
+        AND e.image_url IS NOT NULL
+        AND e.image_url != ''
+        AND e.timestamp > 0
+        AND s.names IN ('Kestrel', 'Bat', 'Other')
       ORDER BY e.timestamp DESC
     `)
     .all(boxName)

@@ -77,15 +77,17 @@ export default function Home() {
                   href={`/box/${encodeURIComponent(location.name)}`}
                   className="group relative w-full aspect-square border-2 border-black bg-zinc-100 hover:bg-zinc-200 hover:shadow-md transition overflow-hidden"
                 >
-                  <img
-                    src={location.image_url ?? '/placeholder-box.png'}
-                    alt={location.name}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover'
-                    }}
-                  />
+                  {location.image_url && (
+                    <img
+                      src={location.image_url}
+                      alt={location.name}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover'
+                      }}
+                    />
+                  )}
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <span className="text-black font-medium text-lg font-[var(--font-noto-serif)] drop-shadow-lg">{location.name}</span>
                     <span className="text-black text-sm font-mono drop-shadow-lg">{location.serial_number ?? '—'}</span>

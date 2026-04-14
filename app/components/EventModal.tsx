@@ -3,6 +3,7 @@
 import { EventRow } from '@/lib/types'
 import Image from 'next/image'
 import { useState } from 'react'
+import DownloadComplete from './Complete'
 
 export default function EventModal({
     event,
@@ -14,6 +15,7 @@ export default function EventModal({
     onSave?: (updatedEvent: Partial<EventRow>) => void
 }) {
     const [isEditing, setIsEditing] = useState(false)
+    const [showDownloadComplete, setShowDownloadComplete] = useState(false)
     const [editedData, setEditedData] = useState({
         common_name: event.common_name,
         box_name: event.box_name || 'Salmon Creek',
@@ -160,17 +162,49 @@ export default function EventModal({
                         </button>
                     </div>
                 ) : (
-
+                <>
                 <button className="w-full rounded-md bg-[#6BA4A6] py-3 text-white font-medium cursor-pointer"
-                    onClick={() => {
-                         if (editedData.image_url) {
-                            window.open(editedData.image_url, '_blank')
+                    onClick={async () => {
+                        if (!editedData.image_url) return
+                        const res = await fetch(editedData.image_url)
+                        const blob = await res.blob()
+                        const url = window.URL.createObjectURL(blob)
+                        const a = document.createElement('a')
+                        a.href = url
+                        a.download = editedData.image_url.split('/').pop() || 'image.jpg'
+                        document.body.appendChild(a)
+
+                        let dialogOpened = false
+                        const onBlur = () => { dialogOpened = true }
+                        const onFocus = () => {
+                            setShowDownloadComplete(true)
+                            window.removeEventListener('focus', onFocus)
+                            window.removeEventListener('blur', onBlur)
                         }
+                        window.addEventListener('blur', onBlur)
+                        window.addEventListener('focus', onFocus)
+
+                        a.click()
+                        document.body.removeChild(a)
+                        window.URL.revokeObjectURL(url)
+
+                        setTimeout(() => {
+                            if (!dialogOpened) {
+                                setShowDownloadComplete(true)
+                                window.removeEventListener('focus', onFocus)
+                                window.removeEventListener('blur', onBlur)
+                            }
+                        }, 300)
                     }}
                     disabled={!editedData.image_url}
                 >
                     Download Image
                 </button>
+
+                {showDownloadComplete && (
+                    <DownloadComplete onClose={() => setShowDownloadComplete(false)} />
+                )}
+                </>
                 )}
             </div>
         </div>

@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 import ListView from './ListView'
 import CalendarView from './CalendarView'
 import { EventRow } from '@/lib/types'
@@ -8,6 +8,7 @@ import { EventRow } from '@/lib/types'
 import Link from 'next/link'
 import Legend from '../../components/ui/Legend'
 import EventModal from '../../components/EventModal'
+import DownloadComplete from '../../components/Complete'
 import { updateEvent } from '../../actions/update'
 import { exportMonthData } from '../../actions/export'
 
@@ -18,12 +19,14 @@ export default function ViewToggle({ events, boxName }: Props) {
 
     // For Event Modal
     const [selectedEvent, setSelectedEvent] = useState<EventRow | null>(null)
+    const [showDownloadComplete, setShowDownloadComplete] = useState(false)
 
     // Get current month/year
     const [year, setYear] = useState(() => new Date().getFullYear())
     const [month, setMonth] = useState(() => new Date().getMonth())
 
     const searchParams = useSearchParams()
+    const router = useRouter()
     useEffect(() => {
         const eventId = Number(searchParams.get('event'))
         if (!eventId) return
@@ -59,9 +62,31 @@ export default function ViewToggle({ events, boxName }: Props) {
             a.href = url
             a.download = `${monthName}_${year}_data.csv`
             document.body.appendChild(a)
+
+            // Detect whether the browser opens a "Save As" dialog (window loses focus)
+            // vs. auto-downloading silently (window keeps focus)
+            let dialogOpened = false
+            const onBlur = () => { dialogOpened = true }
+            const onFocus = () => {
+                setShowDownloadComplete(true)
+                window.removeEventListener('focus', onFocus)
+                window.removeEventListener('blur', onBlur)
+            }
+            window.addEventListener('blur', onBlur)
+            window.addEventListener('focus', onFocus)
+
             a.click()
             document.body.removeChild(a)
             window.URL.revokeObjectURL(url)
+
+            // Fallback: if no dialog opened (auto-download), show after short delay
+            setTimeout(() => {
+                if (!dialogOpened) {
+                    setShowDownloadComplete(true)
+                    window.removeEventListener('focus', onFocus)
+                    window.removeEventListener('blur', onBlur)
+                }
+            }, 300)
         } else {
             alert('Failed to export data')
         }
@@ -139,6 +164,10 @@ export default function ViewToggle({ events, boxName }: Props) {
                 )}
             </div>
 
+            {showDownloadComplete && (
+                <DownloadComplete onClose={() => setShowDownloadComplete(false)} />
+            )}
+
             {/* Event Modal needs to sit on top of everything */}
             {selectedEvent && (
                 <EventModal
@@ -146,7 +175,8 @@ export default function ViewToggle({ events, boxName }: Props) {
                     onClose={() => setSelectedEvent(null)}
                     onSave={async (updatedData) => {
                         await updateEvent(selectedEvent.event_id, updatedData)
-                        window.location.reload()
+                        setSelectedEvent(null)
+                        router.refresh()
                     }}
                 />
 
