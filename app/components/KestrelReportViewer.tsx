@@ -6,6 +6,7 @@ import { Chart } from '@/lib/chartSetup'
 import { aggregateByDate } from '@/lib/aggregate'
 import { buildKestrelDocument } from '@/app/components/KestrelReportPDF'
 import type { EventRow } from '@/lib/types'
+import DownloadComplete from './Complete'
 
 const PDFViewer = dynamic(
     () => import('@react-pdf/renderer').then((m) => m.PDFViewer),
@@ -108,6 +109,26 @@ async function buildChartImage(
 
 export function KestrelReportViewer({ events, month, year }: Props) {
     const [chartImage, setChartImage] = useState<string | null>(null)
+    const [showDownloadComplete, setShowDownloadComplete] = useState(false)
+
+    const handleDownloadClick = () => {
+        let dialogOpened = false
+        const onBlur = () => { dialogOpened = true }
+        const onFocus = () => {
+            setShowDownloadComplete(true)
+            window.removeEventListener('focus', onFocus)
+            window.removeEventListener('blur', onBlur)
+        }
+        window.addEventListener('blur', onBlur)
+        window.addEventListener('focus', onFocus)
+        setTimeout(() => {
+            if (!dialogOpened) {
+                setShowDownloadComplete(true)
+                window.removeEventListener('focus', onFocus)
+                window.removeEventListener('blur', onBlur)
+            }
+        }, 300)
+    }
 
     const filtered = events.filter((e) => {
         const d = new Date(e.timestamp * 1000)
@@ -183,6 +204,7 @@ export function KestrelReportViewer({ events, month, year }: Props) {
                         document={doc}
                         fileName={`kestrel-report-${year}-${String(month + 1).padStart(2, '0')}.pdf`}
                         className="px-4 py-2 bg-[#6b9aaa] text-white rounded hover:bg-[#5a8898] transition-colors text-sm font-medium"
+                        onClick={handleDownloadClick}
                     >
                         {({ loading }: { loading: boolean }) =>
                             loading ? 'Generating…' : '⬇ Download Report'
@@ -203,6 +225,9 @@ export function KestrelReportViewer({ events, month, year }: Props) {
                 <div className="h-[700px] bg-gray-100 rounded flex items-center justify-center text-gray-400">
                     {aggregated.length === 0 ? `No data for ${monthLabel}` : 'Building PDF…'}
                 </div>
+            )}
+        {showDownloadComplete && (
+                <DownloadComplete onClose={() => setShowDownloadComplete(false)} />
             )}
         </div>
     )
