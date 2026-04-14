@@ -43,7 +43,7 @@ export default function WaitingPage() {
     }
 
     return (
-        <div className="flex flex-col justify-center items-center min-h-[calc(100vh-128px)] px-4">
+        <div className="flex flex-col justify-center items-center min-h-[calc(100vh-128px)] px-4 py-8">
             <div className="w-full max-w-2xl bg-[#D9D9D6] p-4 sm:p-6 md:p-8 shadow-lg">
                 <div className="text-center">
                     <h2 className="text-xl sm:text-2xl font-bold mb-4">Upload Data</h2>
@@ -89,7 +89,7 @@ export default function WaitingPage() {
                                         ref={fileInputRef}
                                         type="file"
                                         accept=".zip"
-                                        className="w-full max-w-xs text-sm text-gray-600"
+                                        className="w-full max-w-xs text-sm text-gray-600 px-3 py-2 border border-gray-400 rounded bg-white cursor-pointer"
                                         required
                                     />
                                     {error && (
