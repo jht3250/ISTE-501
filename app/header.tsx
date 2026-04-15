@@ -8,7 +8,7 @@ export function Header() {
   const hideProfile = ['/auth', '/upload'].some(path => pathname.startsWith(path))
 
   return (
-    <header className="flex flex-row items-center justify-between bg-[var(--color-blue-gray)] text-white w-full w-full p-8 md:px-20">
+    <header className="relative flex flex-row items-center justify-between bg-[var(--color-blue-gray)] text-white w-full p-8 md:px-20">
       <Link href="/" aria-label="Home">
         <Image
           src="/logo-landtrust.png"
@@ -19,7 +19,9 @@ export function Header() {
         />
       </Link>
 
-      <h1 className="text-2xl font-[var(--font-noto-serif)]">Kestrel Boxes</h1>
+      <h1 className="absolute left-1/2 -translate-x-1/2 text-2xl font-[var(--font-noto-serif)] pointer-events-none">
+        Kestrel Boxes
+      </h1>
 
       {!hideProfile ? (
         <Link href="/profile" className="font-medium">
