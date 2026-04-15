@@ -108,11 +108,11 @@ export default function WaitingPage() {
                 </div>
             </div>
 
-            <div className="w-full max-w-2xl mt-4 text-right">
+            {/* <div className="w-full max-w-2xl mt-4 text-right">
                 <a href="/upload/hardware-error" className="text-black-600 underline hover:text-blue-600 text-sm sm:text-base">
                     I'm having issues
                 </a>
-            </div>
+            </div> */}
         </div>
     )
 }
