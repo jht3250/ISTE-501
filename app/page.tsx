@@ -42,22 +42,22 @@ export default function Home() {
       highlighted: false,
       href: `/box/${encodeURIComponent(notifications.unidentifiedSpecies[0]?.box_name ?? '')}?event=${notifications.unidentifiedSpecies[0]?.event_id ?? ''}`
     },
-    {
-      id: 'lowBattery',
-      label: 'Low Battery',
-      active: notifications.lowBattery.length > 0,
-      icon: '/battery-icon.png',
-      highlighted: false,
-      href: `/box/${encodeURIComponent(notifications.lowBattery[0]?.box_name ?? '')}`
-    },
-    {
-      id: 'disconnectedBox',
-      label: 'Disconnected Box',
-      active: notifications.disconnectedBox.length > 0,
-      icon: '/signal.png',
-      highlighted: false,
-      href: `/box/${encodeURIComponent(notifications.disconnectedBox[0]?.box_name ?? '')}`
-    }
+    // {
+    //   id: 'lowBattery',
+    //   label: 'Low Battery',
+    //   active: notifications.lowBattery.length > 0,
+    //   icon: '/battery-icon.png',
+    //   highlighted: false,
+    //   href: `/box/${encodeURIComponent(notifications.lowBattery[0]?.box_name ?? '')}`
+    // },
+    // {
+    //   id: 'disconnectedBox',
+    //   label: 'Disconnected Box',
+    //   active: notifications.disconnectedBox.length > 0,
+    //   icon: '/signal.png',
+    //   highlighted: false,
+    //   href: `/box/${encodeURIComponent(notifications.disconnectedBox[0]?.box_name ?? '')}`
+    // }
   ].filter(item => item.active);
   // ];
 
@@ -92,12 +92,12 @@ export default function Home() {
                     <span className="text-black font-medium text-lg font-[var(--font-noto-serif)] drop-shadow-lg">{location.name}</span>
                     <span className="text-black text-sm font-mono drop-shadow-lg">{location.serial_number ?? '—'}</span>
                   </div>
-                  {notifications.disconnectedBox.some(n => n.box_name === location.name) && (
+                  {/* {notifications.disconnectedBox.some(n => n.box_name === location.name) && (
                     <img src="/signal.png" alt="Disconnected" className="absolute bottom-2 right-2 w-8 h-8" />
-                  )}
-                  {notifications.lowBattery.some(n => n.box_name === location.name) && (
+                  )} */}
+                  {/* {notifications.lowBattery.some(n => n.box_name === location.name) && (
                     <img src="/battery-icon.png" alt="Low Battery" className="absolute bottom-2 right-2 w-8 h-8" />
-                  )}
+                  )} */}
                   {notifications.unusedBox.some(n => n.box_name === location.name) && (
                     <img src="/clock.png" alt="Unused" className="absolute bottom-2 right-2 w-8 h-8" />
                   )}

@@ -48,19 +48,12 @@ export default function WaitingPage() {
                 <div className="text-center">
                     <h2 className="text-xl sm:text-2xl font-bold mb-4">Upload Data</h2>
 
-                    <div className="flex flex-col sm:flex-row justify-center items-center mb-3 sm:mb-4">
-                        <div className="text-left max-w-sm">
-                            <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
-                                Stand as close to the box as you can. Have this page open and wait for your phone to find the correct hardware connection. Wait until the data has come through before moving away from the box. Lastly, upload the data. This may take a moment.
-                            </p>
-                        </div>
-                        <div className="flex justify-center">
-                            <img
-                                src="/upload.png"
-                                alt="Upload icon"
-                                className="w-32 h-20 sm:w-40 sm:h-24 md:w-48 md:h-32 lg:w-96 lg:h-64 object-contain"
-                            />
-                        </div>
+                    <div className="flex justify-center">
+                        <img
+                            src="/upload.png"
+                            alt="Upload icon"
+                            className="w-32 h-20 sm:w-40 sm:h-24 md:w-48 md:h-32 lg:w-48 lg:h-32 object-contain pb-4"
+                        />
                     </div>
 
                     {loading ? (
@@ -70,12 +63,12 @@ export default function WaitingPage() {
                         </div>
                     ) : (
                         <>
-                            <div className="mb-4">
+                            {/* <div className="mb-4">
                                 <p className="text-base sm:text-lg font-medium text-gray-700 mb-6">Waiting for connection…</p>
-                            </div>
+                            </div> */}
 
-                            <div className="border-t border-gray-400 pt-6">
-                                <p className="text-sm text-gray-600 mb-4">Or upload a ZIP file manually:</p>
+                            <div className="border-b border-gray-400 pb-6">
+                                <p className="text-md text-gray-600 mb-4">Upload a ZIP file:</p>
                                 <form onSubmit={handleUpload} className="flex flex-col gap-3 items-center">
                                     <input
                                         type="text"
@@ -105,6 +98,15 @@ export default function WaitingPage() {
                             </div>
                         </>
                     )}
+
+                    <div className="flex flex-col sm:flex-row justify-center items-center p-4">
+                        <div className="max-w-sm">
+                            <p className="text-md text-gray-600 mb-4">To Gather Data from System:</p>
+                            <p className="text-gray-600 leading-relaxed text-sm">
+                                Stand as close to the box as you can. Wait for your phone to find the correct hardware connection. Download the data once it has come through before moving away from the box. Upload the data here. This may take a moment.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
