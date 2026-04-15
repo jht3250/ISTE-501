@@ -1,14 +1,14 @@
 PRAGMA foreign_keys = ON;
 
-DROP TABLE IF EXISTS data_export;
-DROP TABLE IF EXISTS user_account;
-DROP TABLE IF EXISTS power_log;
-DROP TABLE IF EXISTS event;
-DROP TABLE IF EXISTS species;
-DROP TABLE IF EXISTS device;
-DROP TABLE IF EXISTS bird_box;
+-- DROP TABLE IF EXISTS data_export;
+-- DROP TABLE IF EXISTS user_account;
+-- DROP TABLE IF EXISTS power_log;
+-- DROP TABLE IF EXISTS event;
+-- DROP TABLE IF EXISTS species;
+-- DROP TABLE IF EXISTS device;
+-- DROP TABLE IF EXISTS bird_box;
 
-CREATE TABLE bird_box (
+CREATE TABLE IF NOT EXISTS bird_box (
     box_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     location_lat REAL NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE bird_box (
     image_url TEXT
 );
 
-CREATE TABLE device (
+CREATE TABLE IF NOT EXISTS device (
     device_id INTEGER PRIMARY KEY AUTOINCREMENT,
     box_id INTEGER NOT NULL,
     serial_number TEXT NOT NULL UNIQUE,
@@ -30,12 +30,12 @@ CREATE TABLE device (
     FOREIGN KEY (box_id) REFERENCES bird_box(box_id) ON DELETE CASCADE
 );
 
-CREATE TABLE species (
+CREATE TABLE IF NOT EXISTS species (
     species_id INTEGER PRIMARY KEY AUTOINCREMENT,
     names TEXT NOT NULL UNIQUE
 );
 
-CREATE TABLE event (
+CREATE TABLE IF NOT EXISTS event (
     event_id INTEGER PRIMARY KEY AUTOINCREMENT,
     device_id INTEGER NOT NULL,
     box_id INTEGER NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE event (
     FOREIGN KEY (species_id) REFERENCES species(species_id) ON DELETE RESTRICT
 );
 
-CREATE TABLE power_log (
+CREATE TABLE IF NOT EXISTS power_log (
     log_id INTEGER PRIMARY KEY AUTOINCREMENT,
     device_id INTEGER NOT NULL,
     timestamp INTEGER NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE power_log (
     FOREIGN KEY (device_id) REFERENCES device(device_id) ON DELETE CASCADE
 );
 
-CREATE TABLE user_account (
+CREATE TABLE IF NOT EXISTS user_account (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE user_account (
     reset_token_expires_at INTEGER
 );
 
-CREATE TABLE data_export (
+CREATE TABLE IF NOT EXISTS data_export (
     export_id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     box_id INTEGER NOT NULL,
