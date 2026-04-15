@@ -10,6 +10,7 @@ export default function CreateAccount() {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
+    const [success, setSuccess] = useState(false)
     const router = useRouter()
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -22,7 +23,8 @@ export default function CreateAccount() {
             setError(result.error)
             setLoading(false)
         } else {
-            router.push('/auth')
+            setSuccess(true)
+            setTimeout(() => router.push('/auth'), 2000)
         }
     }
 
@@ -37,6 +39,12 @@ export default function CreateAccount() {
 
                     {error && (
                         <p className="text-red-600 text-sm text-center">{error}</p>
+                    )}
+
+                    {success && (
+                        <p className="text-green-700 text-sm text-center">
+                            Account created! Proceed to log in.
+                        </p>
                     )}
 
                     {/* Email */}
