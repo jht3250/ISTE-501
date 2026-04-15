@@ -1,9 +1,8 @@
 import Database from 'better-sqlite3'
-import fs, { mkdirSync } from 'fs'
+import fs from 'fs'
 import path from 'path'
-import { join } from 'path'
 
-const dbPath = process.env.DB_PATH || join(process.cwd(), 'local.db')
+const dbPath = path.join(process.cwd(), 'local.db')
 const dbExists = fs.existsSync(dbPath)
 const db = new Database(dbPath)
 

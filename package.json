@@ -1,28 +1,25 @@
 {
-  "name": "birdbox",
+  "name": "test1",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "electron-forge start",
+    "start": "next start",
     "lint": "eslint",
     "electron:dev": "concurrently \"next dev\" \"wait-on http://localhost:3000 && electron .\"",
-    "electron:build": "next build && electron-builder",
-    "package": "electron-forge package",
-    "make": "electron-forge make"
+    "electron:build": "next build && electron-builder"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.3.3",
     "@types/adm-zip": "^0.5.8",
     "adm-zip": "^0.5.17",
-    "better-sqlite3": "^12.9.0",
+    "better-sqlite3": "^12.6.2",
     "chart.js": "^4.5.1",
     "chartjs-node-canvas": "^5.0.0",
     "csv-parse": "^6.1.0",
     "drizzle-kit": "^0.31.8",
     "drizzle-orm": "^0.45.1",
-    "electron-squirrel-startup": "^1.0.1",
     "idb": "^8.0.3",
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.7",
@@ -33,15 +30,6 @@
     "react-dom": "19.2.3"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^7.11.1",
-    "@electron-forge/maker-deb": "^7.11.1",
-    "@electron-forge/maker-dmg": "^7.11.1",
-    "@electron-forge/maker-rpm": "^7.11.1",
-    "@electron-forge/maker-squirrel": "^7.11.1",
-    "@electron-forge/maker-zip": "^7.11.1",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.11.1",
-    "@electron-forge/plugin-fuses": "^7.11.1",
-    "@electron/fuses": "^1.8.0",
     "@tailwindcss/postcss": "^4",
     "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^20",
@@ -49,6 +37,7 @@
     "@types/react-dom": "^19",
     "concurrently": "^9.2.1",
     "electron": "^41.1.1",
+    "electron-builder": "^26.8.1",
     "eslint": "^9",
     "eslint-config-next": "16.1.4",
     "tailwindcss": "^4",
@@ -89,52 +78,5 @@
       "uninstallerIcon": "public/icon.ico",
       "shortcutName": "BirdBox"
     }
-  },
-  "forge": {
-    "packagerConfig": {
-      "asar": false,
-      "extraResource": [
-        "ml"
-      ]
-    },
-    "rebuildConfig": {
-      "onlyModules": []
-    },
-    "makers": [
-      {
-        "name": "@electron-forge/maker-squirrel",
-        "config": {
-          "name": "BirdBox"
-        }
-      },
-      {
-        "name": "@electron-forge/maker-dmg",
-        "platforms": [
-          "darwin"
-        ],
-        "config": {
-          "format": "ULFO",
-          "name": "BirdBox"
-        }
-      },
-      {
-        "name": "@electron-forge/maker-zip",
-        "platforms": [
-          "darwin"
-        ]
-      },
-      {
-        "name": "@electron-forge/maker-deb",
-        "platforms": [
-          "linux"
-        ]
-      }
-    ],
-    "plugins": [
-      {
-        "name": "@electron-forge/plugin-auto-unpack-natives",
-        "config": {}
-      }
-    ]
   }
 }
