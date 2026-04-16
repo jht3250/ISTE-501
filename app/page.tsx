@@ -145,9 +145,9 @@ export default function Home() {
         {/* <VisitsChart data={aggregateByDate(events)} /> */}
 
         <HomeClient events={events} visitCounts={visitCounts} />
-      
+
         {/* Storage Progress Section */}
-        <div className="mt-12 px-12 flex justify-around gap-8">
+        {/* <div className="mt-12 px-12 flex justify-around gap-8">
           <div className="flex flex-col gap-2 w-full">
             <span className="text-md text-muted-foreground">Image Storage</span>
             <ProgressBar value={30} />
@@ -158,7 +158,7 @@ export default function Home() {
             <ProgressBar value={22} />
             <span className="text-sm text-muted-foreground text-center">22GB / 64GB</span>
           </div>
-        </div>
+        </div> */}
       </main>
     </div>
   );

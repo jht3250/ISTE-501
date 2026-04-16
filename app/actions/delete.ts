@@ -9,8 +9,8 @@ export async function deleteBox(boxId: number) {
     revalidatePath('/')
 }
 
-export async function deleteEvent(formData: FormData) {
-    const eventId = Number(formData.get('eventId'))
+export async function deleteEvent(eventId: number) {
+    // const eventId = Number(formData.get('eventId'))
     db.prepare('DELETE FROM event WHERE event_id = ?').run(eventId)
     revalidatePath('/corrupted')
 }

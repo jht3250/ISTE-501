@@ -23,6 +23,13 @@ export default function CorruptedPage() {
         setShowDeleteCorrupted(false)
     }
 
+    const [toast, setToast] = useState(false)
+
+    const showToast = () => {
+        setToast(true)
+        setTimeout(() => setToast(false), 2000)
+    }
+
     return (
         <main className="m-10 mx-20">
             {/* Header section */}
@@ -80,6 +87,12 @@ export default function CorruptedPage() {
                             const validImage = Boolean(event.image_url)
                             const corruptedStyle = "text-red-600 font-semibold"
 
+                            const handleDelete = async (eventId: number) => {
+                                await deleteEvent(eventId)
+                                setEvents(prev => prev.filter(e => e.event_id !== eventId))
+                                showToast()
+                            }
+
                             return (
                                 <tr
                                     key={event.event_id}
@@ -87,12 +100,15 @@ export default function CorruptedPage() {
                                 >
                                     {/* Delete button */}
                                     <td className="border px-3 py-2">
-                                        <form action={deleteEvent}>
+                                        {/* <form action={deleteEvent}>
                                             <input type="hidden" name="eventId" value={event.event_id} />
                                             <button type="submit" className="cursor-pointer hover:opacity-70">
                                                 <img src="/delete-icon.png" className="w-6 h-6 mx-auto" />
                                             </button>
-                                        </form>
+                                        </form> */}
+                                        <button onClick={() => handleDelete(event.event_id)} className="cursor-pointer hover:opacity-70">
+                                            <img src="/delete-icon.png" className="w-6 h-6 mx-auto" />
+                                        </button>
                                     </td>
 
                                     {/* Date */}
@@ -165,6 +181,12 @@ export default function CorruptedPage() {
                         })}
                     </tbody>
                 </table>
+                {toast && (
+                    <div className="fixed bottom-6 right-6 bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm shadow-md flex items-center gap-2">
+                        <span className="text-green-600">✓</span>
+                        Deleted successfully
+                    </div>
+                )} 
             </div>
 
         </main>
