@@ -35,6 +35,13 @@ CREATE TABLE species (
     names TEXT NOT NULL UNIQUE
 );
 
+INSERT INTO species (names) VALUES
+('Kestrel'),
+('Bat'),
+('Other'),
+('Unknown Bird'),
+('ERROR_SPECIES');
+
 CREATE TABLE event (
     event_id INTEGER PRIMARY KEY AUTOINCREMENT,
     device_id INTEGER NOT NULL,
