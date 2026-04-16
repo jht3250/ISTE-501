@@ -12,12 +12,12 @@ if (!dbExists) {
   const schema = fs.readFileSync(schemaPath, 'utf8')
   db.exec(schema)
 
-  // temporary for dummy data /seed.sql
-  const seedPath = path.join(process.cwd(), 'db/seed.sql')
-  if (fs.existsSync(seedPath)) {
-    const seed = fs.readFileSync(seedPath, 'utf8')
-    db.exec(seed)
-  }
+  // // temporary for dummy data /seed.sql
+  // const seedPath = path.join(process.cwd(), 'db/seed.sql')
+  // if (fs.existsSync(seedPath)) {
+  //   const seed = fs.readFileSync(seedPath, 'utf8')
+  //   db.exec(seed)
+  // }
 }
 
 
