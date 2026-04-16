@@ -42,27 +42,28 @@ export default function Home() {
       highlighted: false,
       href: `/box/${encodeURIComponent(notifications.unidentifiedSpecies[0]?.box_name ?? '')}?event=${notifications.unidentifiedSpecies[0]?.event_id ?? ''}`
     },
-    {
-      id: 'lowBattery',
-      label: 'Low Battery',
-      active: notifications.lowBattery.length > 0,
-      icon: '/battery-icon.png',
-      highlighted: false,
-      href: `/box/${encodeURIComponent(notifications.lowBattery[0]?.box_name ?? '')}`
-    },
-    {
-      id: 'disconnectedBox',
-      label: 'Disconnected Box',
-      active: notifications.disconnectedBox.length > 0,
-      icon: '/signal.png',
-      highlighted: false,
-      href: `/box/${encodeURIComponent(notifications.disconnectedBox[0]?.box_name ?? '')}`
-    }
+    // {
+    //   id: 'lowBattery',
+    //   label: 'Low Battery',
+    //   active: notifications.lowBattery.length > 0,
+    //   icon: '/battery-icon.png',
+    //   highlighted: false,
+    //   href: `/box/${encodeURIComponent(notifications.lowBattery[0]?.box_name ?? '')}`
+    // },
+    // {
+    //   id: 'disconnectedBox',
+    //   label: 'Disconnected Box',
+    //   active: notifications.disconnectedBox.length > 0,
+    //   icon: '/signal.png',
+    //   highlighted: false,
+    //   href: `/box/${encodeURIComponent(notifications.disconnectedBox[0]?.box_name ?? '')}`
+    // }
   ].filter(item => item.active);
   // ];
 
-  const seasonalReminder = false;
-  // TODO: Implement seasonal reminder logic based on current date and season end date
+  //NOTE: change seasonal reminder based on accurate data about when kestrels are most active in the area. Currently set to show in September (month 8) as a placeholder.
+  const currentMonth = new Date().getMonth(); // 0-indexed, September = 8
+  const seasonalReminder = currentMonth === 8;
 
   return (
     <div className="flex min-h-screen bg-zinc-50 font-sans">
@@ -92,12 +93,12 @@ export default function Home() {
                     <span className="text-black font-medium text-lg font-[var(--font-noto-serif)] drop-shadow-lg">{location.name}</span>
                     <span className="text-black text-sm font-mono drop-shadow-lg">{location.serial_number ?? '—'}</span>
                   </div>
-                  {notifications.disconnectedBox.some(n => n.box_name === location.name) && (
+                  {/* {notifications.disconnectedBox.some(n => n.box_name === location.name) && (
                     <img src="/signal.png" alt="Disconnected" className="absolute bottom-2 right-2 w-8 h-8" />
-                  )}
-                  {notifications.lowBattery.some(n => n.box_name === location.name) && (
+                  )} */}
+                  {/* {notifications.lowBattery.some(n => n.box_name === location.name) && (
                     <img src="/battery-icon.png" alt="Low Battery" className="absolute bottom-2 right-2 w-8 h-8" />
-                  )}
+                  )} */}
                   {notifications.unusedBox.some(n => n.box_name === location.name) && (
                     <img src="/clock.png" alt="Unused" className="absolute bottom-2 right-2 w-8 h-8" />
                   )}
@@ -145,9 +146,9 @@ export default function Home() {
         {/* <VisitsChart data={aggregateByDate(events)} /> */}
 
         <HomeClient events={events} visitCounts={visitCounts} />
-      
+
         {/* Storage Progress Section */}
-        <div className="mt-12 px-12 flex justify-around gap-8">
+        {/* <div className="mt-12 px-12 flex justify-around gap-8">
           <div className="flex flex-col gap-2 w-full">
             <span className="text-md text-muted-foreground">Image Storage</span>
             <ProgressBar value={30} />
@@ -158,7 +159,7 @@ export default function Home() {
             <ProgressBar value={22} />
             <span className="text-sm text-muted-foreground text-center">22GB / 64GB</span>
           </div>
-        </div>
+        </div> */}
       </main>
     </div>
   );

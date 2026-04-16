@@ -1,11 +1,34 @@
+'use client'
+
 import Link from "next/link";
 import Image from "next/image";
 import { SPECIES_COLORS } from "@/lib/speciesColors";
-import { getCorruptedEvents } from "@/lib/queries";
+import { getCorruptedEventsAction } from "@/app/actions/corrupt";
 import { deleteEvent, deleteAllCorrupted } from "@/app/actions/delete";
+import { useEffect, useState } from "react";
+import DeleteCorruptDataModal from "../components/DeleteCorruptData";
+import { EventRow } from "@/lib/types";
 
 export default function CorruptedPage() {
-    const events = getCorruptedEvents()
+    const [events, setEvents] = useState<EventRow[]>([])
+
+    useEffect(() => {
+        getCorruptedEventsAction().then(setEvents)
+    }, [])
+
+    const [showDeleteCorrupted, setShowDeleteCorrupted] = useState(false)
+
+    const handleConfirmDeleteCorrupted = async () => {
+        await deleteAllCorrupted()
+        setShowDeleteCorrupted(false)
+    }
+
+    const [toast, setToast] = useState(false)
+
+    const showToast = () => {
+        setToast(true)
+        setTimeout(() => setToast(false), 2000)
+    }
 
     return (
         <main className="m-10 mx-20">
@@ -19,15 +42,21 @@ export default function CorruptedPage() {
                     <span className='hover:underline text-xl font-[var(--font-noto-serif)]'>Corrupted Data</span>
                 </Link>
 
-                <form action={deleteAllCorrupted}>
-                    <button
-                        type="submit"
-                        className="flex rounded-md bg-[#9E2A2B] px-4 py-2 text-sm font-medium text-white hover:bg-red-900 cursor-pointer items-center gap-2"
-                    >
-                        <Image src="/trash-icon.png" alt="Trash Icon" width={24} height={24} />
-                        Delete All Corrupted Data
-                    </button>
-                </form>
+                <button
+                    onClick={() => setShowDeleteCorrupted(true)}
+                    className="flex rounded-md bg-[#9E2A2B] px-4 py-2 text-sm font-medium text-white hover:bg-red-900 cursor-pointer items-center gap-2"
+                >
+                    <Image src="/trash-icon.png" alt="Trash Icon" width={24} height={24} />
+                    Delete All Corrupted Data
+                </button>
+
+                {showDeleteCorrupted && (
+                    <DeleteCorruptDataModal
+                        onConfirm={handleConfirmDeleteCorrupted}
+                        onCancel={() => setShowDeleteCorrupted(false)}
+                        count={events.length}
+                    />
+                )}
             </div>
 
             {/* Table section */}
@@ -58,6 +87,12 @@ export default function CorruptedPage() {
                             const validImage = Boolean(event.image_url)
                             const corruptedStyle = "text-red-600 font-semibold"
 
+                            const handleDelete = async (eventId: number) => {
+                                await deleteEvent(eventId)
+                                setEvents(prev => prev.filter(e => e.event_id !== eventId))
+                                showToast()
+                            }
+
                             return (
                                 <tr
                                     key={event.event_id}
@@ -65,12 +100,15 @@ export default function CorruptedPage() {
                                 >
                                     {/* Delete button */}
                                     <td className="border px-3 py-2">
-                                        <form action={deleteEvent}>
+                                        {/* <form action={deleteEvent}>
                                             <input type="hidden" name="eventId" value={event.event_id} />
                                             <button type="submit" className="cursor-pointer hover:opacity-70">
                                                 <img src="/delete-icon.png" className="w-6 h-6 mx-auto" />
                                             </button>
-                                        </form>
+                                        </form> */}
+                                        <button onClick={() => handleDelete(event.event_id)} className="cursor-pointer hover:opacity-70">
+                                            <img src="/delete-icon.png" className="w-6 h-6 mx-auto" />
+                                        </button>
                                     </td>
 
                                     {/* Date */}
@@ -143,6 +181,12 @@ export default function CorruptedPage() {
                         })}
                     </tbody>
                 </table>
+                {toast && (
+                    <div className="fixed bottom-6 right-6 bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-full text-sm shadow-md flex items-center gap-2">
+                        <span className="text-green-600">✓</span>
+                        Deleted successfully
+                    </div>
+                )} 
             </div>
 
         </main>
