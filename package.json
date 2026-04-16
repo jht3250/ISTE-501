@@ -1,5 +1,5 @@
 {
-  "name": "test1",
+  "name": "birdbox",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -45,7 +45,7 @@
     "wait-on": "^9.0.4"
   },
   "description": "BirdBox wildlife classifier",
-  "author": "Your Name",
+  "author": "Crowe's Crows",
   "main": "electron/main.js",
   "build": {
     "appId": "com.birdbox.app",
