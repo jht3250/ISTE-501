@@ -5,20 +5,21 @@ import { spawnSync } from "child_process";
 import AdmZip from "adm-zip";
 import db from "@/lib/db";
 
-/** Parse a YYYYMMDD filename and return a Unix timestamp (midnight UTC). */
+/** Parse a capture_YYYYMMDD_HHMMSS filename and return a Unix timestamp. */
 function parseDateFilename(filename: string): number | null {
-  const base = filename.replace(/\.[^.]+$/, ""); // strip extension
-  const match = base.match(/(\d{8})/);
+  const base = filename.replace(/\.[^.]+$/, "");
+  const match = base.match(/(\d{4})(\d{2})(\d{2})_(\d{2})(\d{2})(\d{2})/);
   if (!match) return null;
 
-  const s = match[1];
-  const year = parseInt(s.slice(0, 4), 10);
-  const month = parseInt(s.slice(4, 6), 10) - 1; // 0-based
-  const day = parseInt(s.slice(6, 8), 10);
-
-  const date = new Date(Date.UTC(year, month, day));
+  const date = new Date(Date.UTC(
+    parseInt(match[1], 10),
+    parseInt(match[2], 10) - 1,
+    parseInt(match[3], 10),
+    parseInt(match[4], 10),
+    parseInt(match[5], 10),
+    parseInt(match[6], 10),
+  ));
   if (isNaN(date.getTime())) return null;
-
   return Math.floor(date.getTime() / 1000);
 }
 
