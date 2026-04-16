@@ -61,8 +61,9 @@ export default function Home() {
   ].filter(item => item.active);
   // ];
 
-  const seasonalReminder = false;
-  // TODO: Implement seasonal reminder logic based on current date and season end date
+  //NOTE: change seasonal reminder based on accurate data about when kestrels are most active in the area. Currently set to show in September (month 8) as a placeholder.
+  const currentMonth = new Date().getMonth(); // 0-indexed, September = 8
+  const seasonalReminder = currentMonth === 8;
 
   return (
     <div className="flex min-h-screen bg-zinc-50 font-sans">
