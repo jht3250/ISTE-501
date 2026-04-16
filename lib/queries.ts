@@ -171,6 +171,26 @@ export function getDisconnectedBoxNotifications(): DisconnectedBoxNotification[]
   return rows as DisconnectedBoxNotification[]
 }
 
+export function getEventById(eventId: number): EventRow | undefined {
+  const row = db
+    .prepare(`
+      SELECT
+        e.event_id,
+        e.timestamp,
+        s.names as common_name,
+        b.name AS box_name,
+        e.image_url,
+        e.confidence
+      FROM event e
+      JOIN species s ON e.species_id = s.species_id
+      JOIN bird_box b ON e.box_id = b.box_id
+      WHERE e.event_id = ?
+    `)
+    .get(eventId)
+
+  return row as EventRow | undefined
+}
+
 export function getCorruptedEvents(): EventRow[] {
   const rows = db
     .prepare(`

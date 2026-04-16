@@ -12,30 +12,28 @@ import DownloadComplete from '../../components/Complete'
 import { updateEvent } from '../../actions/update'
 import { exportMonthData } from '../../actions/export'
 
-type Props = { events: EventRow[], boxName: string }
+type Props = { events: EventRow[], boxName: string, initialEvent?: EventRow | null }
 
-export default function ViewToggle({ events, boxName }: Props) {
+export default function ViewToggle({ events, boxName, initialEvent }: Props) {
     const [view, setView] = useState<'list' | 'calendar'>('calendar')
 
     // For Event Modal
     const [selectedEvent, setSelectedEvent] = useState<EventRow | null>(null)
     const [showDownloadComplete, setShowDownloadComplete] = useState(false)
 
-    // Get current month/year
-    const [year, setYear] = useState(() => new Date().getFullYear())
-    const [month, setMonth] = useState(() => new Date().getMonth())
+    // Get current month/year — navigate to initialEvent's month if provided
+    const [year, setYear] = useState(() => {
+        if (initialEvent) return new Date(initialEvent.timestamp * 1000).getFullYear()
+        return new Date().getFullYear()
+    })
+    const [month, setMonth] = useState(() => {
+        if (initialEvent) return new Date(initialEvent.timestamp * 1000).getMonth()
+        return new Date().getMonth()
+    })
 
-    const searchParams = useSearchParams()
     const router = useRouter()
     useEffect(() => {
-        const eventId = Number(searchParams.get('event'))
-        if (!eventId) return
-        const target = events.find(e => e.event_id === eventId)
-        if (!target) return
-        const d = new Date(target.timestamp * 1000)
-        setYear(d.getFullYear())
-        setMonth(d.getMonth())
-        setSelectedEvent(target)
+        if (initialEvent) setSelectedEvent(initialEvent)
     }, [])
 
     const monthName = new Date(year, month).toLocaleString('default', {
