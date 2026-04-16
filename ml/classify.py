@@ -21,19 +21,38 @@ if __name__ == "__main__":
         print(json.dumps({"error": "No image path provided"}))
         sys.exit(1)
 
-    image_path = Path(sys.argv[1])
-    if not image_path.exists():
-        print(json.dumps({"error": f"File not found: {image_path}"}))
-        sys.exit(1)
+    image_paths = [Path(p) for p in sys.argv[1:]]
 
     try:
         model, device, classes = load_model()
-        result = predict_image(image_path, model=model, device=device)
-        print(json.dumps({
-            "species": result["species"],
-            "confidence": round(result["confidence"] * 100, 1),
-            "all_probs": {k: round(v * 100, 1) for k, v in result["all_probs"].items()}
-        }))
+
+        # Single image — return a plain object (backwards compatible with /api/classify)
+        if len(image_paths) == 1:
+            image_path = image_paths[0]
+            if not image_path.exists():
+                print(json.dumps({"error": f"File not found: {image_path}"}))
+                sys.exit(1)
+            result = predict_image(image_path, model=model, device=device)
+            print(json.dumps({
+                "species": result["species"],
+                "confidence": round(result["confidence"] * 100, 1),
+                "all_probs": {k: round(v * 100, 1) for k, v in result["all_probs"].items()}
+            }))
+        else:
+            # Multiple images — load model once, classify all
+            results = []
+            for image_path in image_paths:
+                if not image_path.exists():
+                    results.append({"path": str(image_path), "error": f"File not found: {image_path}"})
+                    continue
+                result = predict_image(image_path, model=model, device=device)
+                results.append({
+                    "path": str(image_path),
+                    "species": result["species"],
+                    "confidence": round(result["confidence"] * 100, 1),
+                    "all_probs": {k: round(v * 100, 1) for k, v in result["all_probs"].items()}
+                })
+            print(json.dumps(results))
     except Exception as e:
         print(json.dumps({"error": str(e)}))
         sys.exit(1)

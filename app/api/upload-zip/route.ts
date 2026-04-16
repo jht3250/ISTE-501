@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile, unlink, mkdir, rm } from "fs/promises";
+import { writeFile, mkdir, rm } from "fs/promises";
 import { join } from "path";
 import { spawnSync } from "child_process";
 import AdmZip from "adm-zip";
@@ -22,16 +22,19 @@ function parseDateFilename(filename: string): number | null {
   return Math.floor(date.getTime() / 1000);
 }
 
-/** Call ml/classify.py and return the ML result. */
-function classifyImage(imagePath: string): {
-  species: string;
-  confidence: number;
-  all_probs: Record<string, number>;
-} {
+/** Call ml/classify.py once with all image paths, loading the model only once. */
+function classifyImages(imagePaths: string[]): {
+  path: string;
+  species?: string;
+  confidence?: number;
+  all_probs?: Record<string, number>;
+  error?: string;
+}[] {
+  if (imagePaths.length === 0) return [];
   const scriptPath = join(process.cwd(), "ml", "classify.py");
-  const proc = spawnSync("python", [scriptPath, imagePath], {
+  const proc = spawnSync("python", [scriptPath, ...imagePaths], {
     encoding: "utf-8",
-    timeout: 30000,
+    timeout: 120000,
   });
 
   if (proc.error) throw new Error(proc.error.message);
@@ -83,6 +86,10 @@ export async function POST(req: NextRequest) {
   let eventsAdded = 0;
   const errors: string[] = [];
 
+  // Collect valid image entries first so we can batch-classify in one Python call
+  type PendingEntry = { entryName: string; tmpPath: string; timestamp: number; data: Buffer };
+  const pending: PendingEntry[] = [];
+
   try {
     const zip = new AdmZip(buffer);
     const entries = zip.getEntries();
@@ -90,11 +97,9 @@ export async function POST(req: NextRequest) {
     for (const entry of entries) {
       if (entry.isDirectory) continue;
 
-      // Use only the last path segment as the filename
       const entryName = entry.entryName.split("/").pop() ?? entry.entryName;
       const ext = entryName.split(".").pop()?.toLowerCase() ?? "";
 
-      // Only process image files
       if (!["png", "jpg", "jpeg", "bmp"].includes(ext)) continue;
 
       const timestamp = parseDateFilename(entryName);
@@ -103,27 +108,33 @@ export async function POST(req: NextRequest) {
         continue;
       }
 
-      // Write image to tmp so Python can read it
       const tmpImagePath = join(tmpDir, entryName);
       await writeFile(tmpImagePath, entry.getData());
+      pending.push({ entryName, tmpPath: tmpImagePath, timestamp, data: entry.getData() });
+    }
 
-      try {
-        const mlResult = classifyImage(tmpImagePath);
+    if (pending.length > 0) {
+      // Single Python invocation — model loads once for all images
+      const mlResults = classifyImages(pending.map(p => p.tmpPath));
+      const resultByPath = new Map(mlResults.map(r => [r.path, r]));
 
-        // Determine species_id (default to "Other" = 3 when unknown)
-        const speciesName =
-          mlResult.species.charAt(0).toUpperCase() + mlResult.species.slice(1);
+      for (const { entryName, tmpPath, timestamp, data } of pending) {
+        const mlResult = resultByPath.get(tmpPath);
+        if (!mlResult || mlResult.error) {
+          errors.push(`Failed to classify "${entryName}": ${mlResult?.error ?? "no result"}`);
+          continue;
+        }
+
+        const speciesName = mlResult.species!.charAt(0).toUpperCase() + mlResult.species!.slice(1);
         const speciesRow = db
           .prepare("SELECT species_id FROM species WHERE names = ?")
           .get(speciesName) as { species_id: number } | undefined;
         const speciesId = speciesRow?.species_id ?? 3;
 
-        // Persist image under /public/images/camera/
         const imageFilename = `${deviceSerial}-${timestamp}-${eventsAdded}.jpg`;
         const imageUrl = `/images/camera/${imageFilename}`;
-        await writeFile(join(imageDir, imageFilename), entry.getData());
+        await writeFile(join(imageDir, imageFilename), data);
 
-        // Insert event using the date parsed from the filename
         insertEvent.run(
           device.device_id,
           device.box_id,
@@ -135,10 +146,6 @@ export async function POST(req: NextRequest) {
           mlResult.confidence
         );
         eventsAdded++;
-      } catch (err: any) {
-        errors.push(`Failed to process "${entryName}": ${err.message}`);
-      } finally {
-        await unlink(tmpImagePath).catch(() => {});
       }
     }
   } catch (err: any) {
